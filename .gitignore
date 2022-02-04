@@ -1,4 +1,4 @@
 __pycache__/
 config/config.toml
 config/website.toml
-google-source/.
+google-source/
