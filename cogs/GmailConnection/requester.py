@@ -36,8 +36,6 @@ class Requester:
             _, message_bytes = message_data[0]
             message: mailbox.MaildirMessage = mailbox.MaildirMessage(message_bytes)
 
-            message.set_flags(["S"])
-
             email_data["subject"] = message["subject"].strip("Fwd: ")
 
             for part in message.walk():
