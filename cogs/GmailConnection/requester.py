@@ -26,7 +26,7 @@ class Requester:
         self.get_inbox()
         # The thrown var is a status check
         # Search data is a list of bytes
-        _, search_data = self.client.search(None, 'FROM', '"jojomedhat2004@gmail.com"', "UNFLAGGED")
+        _, search_data = self.client.search(None, 'FROM', '"jojomedhat2004@gmail.com"', "UNSEEN")
 
         all_messages = []
         for message_num in search_data[0].split():
@@ -36,9 +36,7 @@ class Requester:
             _, message_bytes = message_data[0]
             message: mailbox.MaildirMessage = mailbox.MaildirMessage(message_bytes)
 
-            print(message.get_flags())
-            message.add_flag("F")
-            print(message.get_flags())
+            message.set_flags(["S"])
 
             email_data["subject"] = message["subject"].strip("Fwd: ")
 
