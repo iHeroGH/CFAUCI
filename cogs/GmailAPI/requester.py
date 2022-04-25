@@ -1,4 +1,5 @@
-from google_source import authenticate
+from cogs.GmailAPI.google_source import authenticate
+# from google_source import authenticate
 
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
@@ -28,4 +29,7 @@ class Requester:
         return messages
 
     def get_message(self, message_id):
-        return self.get_users().messages().get(userId="me", id=message_id).execute()
+        return self.get_users().messages().get(userId="me", id=message_id, format='raw').execute()
+
+if __name__ == "__main__":
+    print(Requester().get_message("17ec7147691597e5")['raw'])

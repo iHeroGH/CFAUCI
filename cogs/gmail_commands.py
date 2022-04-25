@@ -1,5 +1,6 @@
 from discord.ext import commands, vbu
-from GmailAPI import Requester
+
+from cogs.GmailAPI.requester import Requester
 
 class GmailCommands(vbu.Cog):
 
@@ -8,16 +9,15 @@ class GmailCommands(vbu.Cog):
         """
         messages
         """
-        requester = Requester()
-        await ctx.send(requester.get_partial_message_list())
+        await ctx.send(self.bot.requester.get_partial_message_list())
 
     @commands.command()
     async def full(self, ctx: vbu.Context, message_id: str):
         """
         messages
         """
-        requester = Requester()
-        await ctx.send(requester.get_message(message_id))
+        f = self.bot.requester.get_message(message_id)
+        await ctx.send(f['snippet'])
 
 
 def setup(bot: vbu.Bot):
