@@ -23,6 +23,7 @@ class Requester:
         self.client.select('inbox')
 
     def get_messages(self):
+        self.get_inbox()
         # The thrown var is a status check
         # Search data is a list of bytes
         _, search_data = self.client.search(None, 'FROM', '"jojomedhat2004@gmail.com"', "UNFLAGGED")
@@ -35,7 +36,9 @@ class Requester:
             _, message_bytes = message_data[0]
             message: mailbox.MaildirMessage = mailbox.MaildirMessage(message_bytes)
 
+            print(message.get_flags())
             message.add_flag("F")
+            print(message.get_flags())
 
             email_data["subject"] = message["subject"].strip("Fwd: ")
 
