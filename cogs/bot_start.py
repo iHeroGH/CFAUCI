@@ -30,6 +30,8 @@ class BotStart(vbu.Cog):
         embed.color = 0xFF00FF
 
         body = message['body']
+        if 'html_body' in message.keys():
+            body = "Decoded Message " + message['html_body']
         body = body.split('\n')
         if body[0] == "---------- Forwarded message ---------":
             body = body[5:]
