@@ -45,6 +45,10 @@ class Requester:
                     body = part.get_payload(decode=True)
                     email_data['body'] = body.decode()
 
+                elif content_type == "text/html":
+                    html_body = part.get_payload(decode=True)
+                    email_data['html_body'] = html_body.decode()
+
             all_messages.append(email_data)
 
         return all_messages
