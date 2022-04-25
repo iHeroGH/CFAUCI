@@ -26,7 +26,7 @@ class Requester:
         self.get_inbox()
         # The thrown var is a status check
         # Search data is a list of bytes
-        _, search_data = self.client.search(None, 'FROM', '"jojomedhat2004@gmail.com"', "UNSEEN")
+        _, search_data = self.client.search(None, 'FROM', '"03260@chick-fil-a.com"', "UNSEEN")
 
         all_messages = []
         for message_num in search_data[0].split():
