@@ -27,7 +27,7 @@ class GmailCommands(vbu.Cog):
         body = body.split('\n')[5:]
         body = '\n'.join(body)
 
-        embed.add_field(name = message["subject"], value = body[0:500] + "\n*...\n Content Cropped*", inline=False)
+        embed.add_field(name = message["subject"], value = body[0:500] + ("\n*...\n Content Cropped*" if len(body) > 500 else ""), inline=False)
 
         embed.description = "*Make sure to check the email through your inbox! Messages displayed here may be incorrect or incomplete*\n.\n.\n.\n"
 
