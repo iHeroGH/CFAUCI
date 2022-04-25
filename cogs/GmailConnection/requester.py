@@ -31,11 +31,11 @@ class Requester:
         for message_num in search_data[0].split():
             email_data = {}
 
-            self.client.add_flags(message_num, '\\Flagged')
-
             _, message_data = self.client.fetch(message_num, '(RFC822)')
             _, message_bytes = message_data[0]
             message: email._MessageT = email.message_from_bytes(message_bytes)
+
+            message.add_flag('\\Flagged')
 
             email_data["subject"] = message["subject"].strip("Fwd: ")
 
