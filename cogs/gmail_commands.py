@@ -1,6 +1,6 @@
 from discord.ext import commands, vbu
 
-from cogs.GmailAPI.requester import Requester
+from cogs.GmailConnection.requester import Requester
 
 class GmailCommands(vbu.Cog):
 
