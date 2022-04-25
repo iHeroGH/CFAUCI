@@ -8,8 +8,11 @@ class BotStart(vbu.Cog):
     TIME_TO_WAIT = 3 # in hours
     CHANNEL_ID = 913280990145830922
 
+    def get_messages(self):
+        return self.bot.requester.get_messages()
+
     async def send_messages(self):
-        messages = self.bot.requester.get_messages()
+        messages = self.get_messages()
         channel = self.bot.get_channel(self.CHANNEL_ID)
 
         for message in messages:
@@ -19,6 +22,22 @@ class BotStart(vbu.Cog):
     async def restart_task(self):
         await asyncio.sleep(self.TIME_TO_WAIT * 3600)
         await self.send_messages()
+
+    def create_embed(self, message):
+        embed = vbu.Embed()
+
+        embed.title = "New Email!"
+        embed.color = 0xFF00FF
+
+        body = message['body']
+        body = body.split('\n')[5:]
+        body = '\n'.join(body)
+
+        embed.add_field(name = message["subject"], value = body[0:500] + ("\n*...\n Content Cropped*" if len(body) > 500 else ""), inline=False)
+
+        embed.description = "*Make sure to check the email through your inbox! Messages displayed here may be incorrect or incomplete*\n.\n.\n.\n"
+
+        return embed
 
     @vbu.Cog.listener()
     async def on_ready(self):
