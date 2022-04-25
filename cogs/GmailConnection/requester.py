@@ -16,22 +16,24 @@ class Requester:
         return cred_json['login']['username'], cred_json['login']['password']
 
     def __login__(self):
-        self.mail = imaplib.IMAP4_SSL('imap.gmail.com')
-        self.mail.login(self.username, self.password)
+        self.client = imaplib.IMAP4_SSL('imap.gmail.com')
+        self.client.login(self.username, self.password)
 
     def get_inbox(self):
-        self.mail.select('inbox')
+        self.client.select('inbox')
 
     def get_messages(self):
         # The thrown var is a status check
         # Search data is a list of bytes
-        _, search_data = self.mail.search(None, 'FROM', '"jojomedhat2004@gmail.com"')
+        _, search_data = self.client.search(None, 'FROM', '"jojomedhat2004@gmail.com"', "UNFLAGGED")
 
         all_messages = []
         for message_num in search_data[0].split():
             email_data = {}
 
-            _, message_data = self.mail.fetch(message_num, '(RFC822)')
+            self.client.add_flags(message_num, '\\Flagged')
+
+            _, message_data = self.client.fetch(message_num, '(RFC822)')
             _, message_bytes = message_data[0]
             message: email._MessageT = email.message_from_bytes(message_bytes)
 
