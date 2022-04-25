@@ -26,12 +26,15 @@ class GmailCommands(vbu.Cog):
         body = message['body']
         body = body.split('\n')[5:]
         body = '\n'.join(body)
+        body = "No Body Found" if body == "" else body[0:500] + ("\n*...\n Content Cropped*" if len(body) > 500 else "")
+        subject = "No Subject Found" if message["subject"] == "" else message["subject"]
 
-        embed.add_field(name = message["subject"], value = body[0:500] + ("\n*...\n Content Cropped*" if len(body) > 500 else ""), inline=False)
+        embed.add_field(name = subject , value = body, inline=False)
 
         embed.description = "*Make sure to check the email through your inbox! Messages displayed here may be incorrect or incomplete*\n.\n.\n.\n"
 
         return embed
+
 
 def setup(bot: vbu.Bot):
     x = GmailCommands(bot)
