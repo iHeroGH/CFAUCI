@@ -35,8 +35,7 @@ class Requester:
             _, message_bytes = message_data[0]
             message: email._MessageT = email.message_from_bytes(message_bytes)
 
-            for header in ['to', 'from', 'date', 'subject']:
-                email_data[header] = message[header]
+            email_data["subject"] = message["subject"].strip("Fwd: ")
 
             for part in message.walk():
                 content_type = part.get_content_type()
