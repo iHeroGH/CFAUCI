@@ -23,7 +23,11 @@ class GmailCommands(vbu.Cog):
         embed.title = "New Email!"
         embed.color = 0xFF00FF
 
-        embed.add_field(name = message["subject"], value = message["body"][0:500] + "\n*...\n Content Cropped*", inline=False)
+        body = message['body']
+        body = body.split('\n')[5:]
+        body = '\n'.join(body)
+
+        embed.add_field(name = message["subject"], value = body[0:500] + "\n*...\n Content Cropped*", inline=False)
 
         embed.description = "*Make sure to check the email through your inbox! Messages displayed here may be incorrect or incomplete*\n.\n.\n.\n"
 
