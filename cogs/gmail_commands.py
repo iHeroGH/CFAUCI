@@ -24,7 +24,9 @@ class GmailCommands(vbu.Cog):
         embed.color = 0xFF00FF
 
         body = message['body']
-        body = body.split('\n')[5:]
+        body = body.split('\n')
+        if body[0] == "---------- Forwarded message ---------":
+            body = body[5:]
         body = '\n'.join(body)
         body = "No Body Found" if body == "" else body[0:500] + ("\n*...\n Content Cropped*" if len(body) > 500 else "")
         subject = "No Subject Found" if message["subject"] == "" else message["subject"]
