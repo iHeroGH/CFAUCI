@@ -1,8 +1,8 @@
+import json
+
 import imaplib
 import email
-
-import os
-import json
+import mailbox
 
 
 class Requester:
@@ -33,9 +33,9 @@ class Requester:
 
             _, message_data = self.client.fetch(message_num, '(RFC822)')
             _, message_bytes = message_data[0]
-            message: email._MessageT = email.message_from_bytes(message_bytes)
+            message: mailbox.MaildirMessage = mailbox.MaildirMessage(message_bytes)
 
-            message.add_flag('\\Flagged')
+            message.add_flag("F")
 
             email_data["subject"] = message["subject"].strip("Fwd: ")
 
