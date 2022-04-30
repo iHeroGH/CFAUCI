@@ -5,7 +5,7 @@ import asyncio
 
 class BotStart(vbu.Cog):
 
-    TIME_TO_WAIT = 1 # in hours
+    TIME_TO_WAIT = 0.01 # in hours
     CHANNEL_ID = 913280990145830922
 
     def get_messages(self):
@@ -56,8 +56,6 @@ class BotStart(vbu.Cog):
         self.bot.requester = requester
 
         await self.send_messages()
-        await self.restart_task()
-
 
 def setup(bot: vbu.Bot):
     x = BotStart(bot)
