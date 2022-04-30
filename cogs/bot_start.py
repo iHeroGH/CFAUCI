@@ -5,7 +5,7 @@ import asyncio
 
 class BotStart(vbu.Cog):
 
-    TIME_TO_WAIT = 3 # in hours
+    TIME_TO_WAIT = 1 # in hours
     CHANNEL_ID = 913280990145830922
 
     def get_messages(self):
@@ -19,7 +19,10 @@ class BotStart(vbu.Cog):
             embed = self.create_embed(message)
             await channel.send(embed=embed)
 
+        await self.restart_task()
+
     async def restart_task(self):
+        await self.bot.get_user(322542134546661388).send("Restarting task")
         await asyncio.sleep(self.TIME_TO_WAIT * 3600)
         await self.send_messages()
 
@@ -30,8 +33,6 @@ class BotStart(vbu.Cog):
         embed.color = 0xFF00FF
 
         body = message['body']
-        if 'html_body' in message.keys():
-            body = "Decoded Message " + message['html_body']
         body = body.split('\n')
         if body[0] == "---------- Forwarded message ---------":
             body = body[5:]
