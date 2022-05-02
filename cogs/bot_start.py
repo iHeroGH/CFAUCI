@@ -8,11 +8,14 @@ class BotStart(vbu.Cog):
     TIME_TO_WAIT = 0.5 # in hours
     CHANNEL_ID = 913280990145830922
 
-    def get_messages(self):
-        return self.bot.requester.get_messages()
+    def __init__(self, bot: vbu.Bot):
+        super().__init__(bot)
+        self.send_messages.start()
 
     @tasks.loop(seconds=TIME_TO_WAIT * 3600)
     async def send_messages(self):
+        if not self.bot.requester:
+            self.bot.requester = Requester()
         await self.bot.get_user(322542134546661388).send("Restarting task")
         messages = self.get_messages()
         channel = self.bot.get_channel(self.CHANNEL_ID)
@@ -20,6 +23,9 @@ class BotStart(vbu.Cog):
         for message in messages:
             embed = self.create_embed(message)
             await channel.send(embed=embed)
+
+    def get_messages(self):
+        return self.bot.requester.get_messages()
 
     def create_embed(self, message):
         embed = vbu.Embed()
@@ -46,10 +52,9 @@ class BotStart(vbu.Cog):
         """
         Create a new requester object when the bot starts
         """
-        requester = Requester()
-        self.bot.requester = requester
-
-        await self.send_messages.start()
+        if not self.bot.requester:
+            requester = Requester()
+            self.bot.requester = requester
 
     def cog_unload(self):
         self.send_messages.cancel()
