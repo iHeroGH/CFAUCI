@@ -21,8 +21,6 @@ class BotStart(vbu.Cog):
             embed = self.create_embed(message)
             await channel.send(embed=embed)
 
-        await self.restart_task()
-
     def create_embed(self, message):
         embed = vbu.Embed()
 
