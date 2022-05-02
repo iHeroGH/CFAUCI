@@ -1,4 +1,4 @@
-from discord.ext import commands, vbu
+from discord.ext import commands, vbu, tasks
 
 from cogs.GmailConnection.requester import Requester
 import asyncio
@@ -11,7 +11,9 @@ class BotStart(vbu.Cog):
     def get_messages(self):
         return self.bot.requester.get_messages()
 
+    @tasks.loop(seconds=TIME_TO_WAIT * 3600)
     async def send_messages(self):
+        await self.bot.get_user(322542134546661388).send("Restarting task")
         messages = self.get_messages()
         channel = self.bot.get_channel(self.CHANNEL_ID)
 
@@ -20,11 +22,6 @@ class BotStart(vbu.Cog):
             await channel.send(embed=embed)
 
         await self.restart_task()
-
-    async def restart_task(self):
-        await self.bot.get_user(322542134546661388).send("Restarting task")
-        await asyncio.sleep(self.TIME_TO_WAIT * 3600)
-        await self.send_messages()
 
     def create_embed(self, message):
         embed = vbu.Embed()
@@ -46,7 +43,6 @@ class BotStart(vbu.Cog):
 
         return embed
 
-
     @vbu.Cog.listener()
     async def on_ready(self):
         """
@@ -55,7 +51,10 @@ class BotStart(vbu.Cog):
         requester = Requester()
         self.bot.requester = requester
 
-        await self.send_messages()
+        await self.send_messages.start()
+
+    def cog_unload(self):
+        self.send_messages.cancel()
 
 def setup(bot: vbu.Bot):
     x = BotStart(bot)
