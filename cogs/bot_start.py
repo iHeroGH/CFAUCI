@@ -21,6 +21,7 @@ class BotStart(vbu.Cog):
         except:
             self.bot.requester = Requester()
             self.send_messages.restart()
+            return
 
         channel = self.bot.get_channel(self.CHANNEL_ID)
 
