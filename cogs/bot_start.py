@@ -10,12 +10,11 @@ class BotStart(vbu.Cog):
 
     def __init__(self, bot: vbu.Bot):
         super().__init__(bot)
+        self.bot.requester = Requester()
         self.send_messages.start()
 
     @tasks.loop(seconds=TIME_TO_WAIT * 3600)
     async def send_messages(self):
-        if not self.bot.requester:
-            self.bot.requester = Requester()
         await self.bot.get_user(322542134546661388).send("Restarting task")
         try:
             messages = self.get_messages()
