@@ -17,7 +17,12 @@ class BotStart(vbu.Cog):
         if not self.bot.requester:
             self.bot.requester = Requester()
         await self.bot.get_user(322542134546661388).send("Restarting task")
-        messages = self.get_messages()
+        try:
+            messages = self.get_messages()
+        except:
+            self.bot.requester = Requester()
+            self.send_messages.restart()
+
         channel = self.bot.get_channel(self.CHANNEL_ID)
 
         for message in messages:
