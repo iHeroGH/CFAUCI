@@ -1,7 +1,6 @@
 import json
 
 import imaplib
-import email
 import mailbox
 
 
@@ -52,5 +51,3 @@ class Requester:
             all_messages.append(email_data)
 
         return all_messages
-
-Requester()
