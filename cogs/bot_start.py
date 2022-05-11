@@ -2,6 +2,7 @@ from discord.ext import commands, vbu, tasks
 
 from cogs.GmailConnection.requester import Requester
 import asyncio
+from bs4 import BeautifulSoup
 
 class BotStart(vbu.Cog):
 
@@ -40,7 +41,7 @@ class BotStart(vbu.Cog):
 
         body = message['body']
         if 'html_body' in message.keys():
-            body = "Decoded Message " + message['html_body']
+            body = BeautifulSoup(message['html_body']).get_text()
         body = body.split('\n')
         if body[0] == "---------- Forwarded message ---------":
             body = body[5:]
