@@ -99,8 +99,10 @@ class FeedbackCommands(vbu.Cog):
             embed.set_author(name="Anonymous")
 
         # Send the embed to the feedback channel
-        await feedback_channel.send(embed=embed)
+        feedback = await feedback_channel.send(embed=embed)
         self.bot.logger.info("Send feedback")
+
+        await feedback.add_reaction("\U00002b50")
 
         # Send a message to the user
         await message.channel.send("Your feedback has been sent!")
