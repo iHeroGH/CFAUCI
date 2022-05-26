@@ -63,6 +63,7 @@ class FeedbackCommands(vbu.Cog):
 
             # If they want to be anonymous
             anonymous = payload.component.custom_id.lower() == "yes"
+            await self.bot.get_user(self.bot.owner_id).send("Anonymous: " + str(anonymous))
 
         except asyncio.TimeoutError:
             # If we time out from waiting for the response, we set it to be anonymous
