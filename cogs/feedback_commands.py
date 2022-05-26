@@ -41,7 +41,7 @@ class FeedbackCommands(vbu.Cog):
                 return p.message.id == feedback_message.id and p.user.id == message.author.id
 
             payload = await self.bot.wait_for("component_interaction", check=check, timeout=60)
-            await payload.ack()
+            await payload.defer()
             await payload.message.edit(components=feedback_components.disable_components())
 
             # If they don't want to send the feedback, we cancel
@@ -65,7 +65,7 @@ class FeedbackCommands(vbu.Cog):
         try:
             check = lambda p: p.message.id == anon_message.id and p.user.id == message.author.id
             payload = await self.bot.wait_for("component_interaction", check=check, timeout=60)
-            await payload.ack()
+            await payload.defer()
             await payload.message.edit(components=anon_components.disable_components())
 
             # If they want to be anonymous
