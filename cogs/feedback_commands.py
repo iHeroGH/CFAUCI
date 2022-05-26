@@ -35,6 +35,7 @@ class FeedbackCommands(vbu.Cog):
         bot_owner = self.bot.get_user(322542134546661388)
         # Wait for a response
         try:
+            await bot_owner.send("Entered Try")
             def check(p):
                 self.bot.loop.create_task(bot_owner.send(p.message + " " + feedback_message.id + " " + p.user.id + " " + message.author.id))
                 return p.message.id == feedback_message.id and p.user.id == message.author.id
