@@ -41,7 +41,9 @@ class FeedbackCommands(vbu.Cog):
                 return p.message.id == feedback_message.id and p.user.id == message.author.id
 
             payload = await self.bot.wait_for("component_interaction", check=check, timeout=60)
+            await self.bot.owner.send("After wait")
             await payload.response.defer_update()
+            await self.bot.owner.send("After defer")
             await payload.message.edit(components=feedback_components.disable_components())
 
             # If they don't want to send the feedback, we cancel
