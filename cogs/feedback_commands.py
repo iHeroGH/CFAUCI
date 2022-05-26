@@ -63,13 +63,12 @@ class FeedbackCommands(vbu.Cog):
 
             # If they want to be anonymous
             anonymous = payload.component.custom_id.lower() == "yes"
-            await message.channel.send("Continuing " + "anonymously..." if anonymous else "not anonymously...")
+            await message.channel.send("Continuing " + ("anonymously..." if anonymous else "not anonymously..."))
 
         except asyncio.TimeoutError:
             # If we time out from waiting for the response, we set it to be anonymous
             await message.channel.send("Timed out waiting for response. Continuing anonymously...")
 
-        await message.channel.send("Sending feedback...")
         self.bot.logger.info("Entering Give Feedback")
         await self.give_feedback(message, anonymous)
 
@@ -81,7 +80,6 @@ class FeedbackCommands(vbu.Cog):
 
         # Get the feedback channel
         feedback_channel = self.bot.get_channel(self.CHANNEL_ID)
-
         self.bot.logger.info("Got Feedback Channel  " + str(feedback_channel))
 
         # Create a new embed
@@ -92,12 +90,13 @@ class FeedbackCommands(vbu.Cog):
 
         # Set the anonymity of the embed
         if not anonymous:
-            embed.set_author_to_user(message.author, use_nick=True)
+            embed.set_author_to_user(message.author)
         else:
             embed.set_author(name="Anonymous")
 
         # Send the embed to the feedback channel
         await feedback_channel.send(embed=embed)
+        self.bot.logger.info("Send feedback")
 
         # Send a message to the user
         await message.channel.send("Your feedback has been sent!")
