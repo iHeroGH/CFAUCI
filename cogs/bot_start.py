@@ -16,12 +16,14 @@ class BotStart(vbu.Cog):
 
     @tasks.loop(seconds=TIME_TO_WAIT * 3600)
     async def send_messages(self):
-        if self.bot_owner:
+        bot_owner = self.bot.get_user(322542134546661388)
+        if bot_owner:
             await self.bot_owner.send("Restarting task")
         try:
             messages = self.get_messages()
         except Exception as e:
-            await self.bot_owner.send(e)
+            if bot_owner:
+                await bot_owner.send(e)
             self.bot.requester.__login__()
             self.send_messages.restart()
             return
@@ -65,8 +67,6 @@ class BotStart(vbu.Cog):
         if not self.bot.requester:
             requester = Requester()
             self.bot.requester = requester
-
-        self.bot_owner = await self.bot.fetch_user(322542134546661388)
 
     def cog_unload(self):
         self.send_messages.cancel()
