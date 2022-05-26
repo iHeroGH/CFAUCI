@@ -82,7 +82,7 @@ class FeedbackCommands(vbu.Cog):
         # Get the feedback channel
         feedback_channel = self.bot.get_channel(self.CHANNEL_ID)
 
-        self.bot.logger.info("Got Feedback Channel  " + feedback_channel)
+        self.bot.logger.info("Got Feedback Channel  " + str(feedback_channel))
 
         # Create a new embed
         embed = vbu.Embed()
