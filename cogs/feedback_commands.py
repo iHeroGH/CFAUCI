@@ -63,23 +63,21 @@ class FeedbackCommands(vbu.Cog):
 
             # If they want to be anonymous
             anonymous = payload.component.custom_id.lower() == "yes"
-            await message.channel.send("Continuing " + "anonymously" if anonymous else "not anonymously" + "...")
+            await message.channel.send("Continuing " + "anonymously..." if anonymous else "not anonymously...")
 
         except asyncio.TimeoutError:
             # If we time out from waiting for the response, we set it to be anonymous
             await message.channel.send("Timed out waiting for response. Continuing anonymously...")
 
-        await self.bot.get_user(self.bot.owner_id).send("Giving Feedback (on_message) - Anonymous: " + str(anonymous))
-
         await message.channel.send("Sending feedback...")
+        print("Entering Give Feedback")
         await self.give_feedback(message, anonymous)
 
     async def give_feedback(self, message: discord.Message, anonymous: bool = True):
         """
         The helper method for dealing with feedback when it's sent to the bot.
         """
-
-        await self.bot.get_user(self.bot.owner_id).send("Giving Feedback")
+        print("Entered Give Feedback")
 
         # Get the feedback channel
         feedback_channel = self.bot.get_channel(self.CHANNEL_ID)
