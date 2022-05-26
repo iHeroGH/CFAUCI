@@ -14,6 +14,10 @@ class FeedbackCommands(vbu.Cog):
         if message.guild:
             return
 
+        # If the author is a bot, ignore the message
+        if message.author.bot:
+            return
+
         # Deal with various message lengths
         if not message or not message.content or len(message.content) <= 1:
             return
