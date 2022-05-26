@@ -63,7 +63,7 @@ class FeedbackCommands(vbu.Cog):
 
             # If they want to be anonymous
             anonymous = payload.component.custom_id.lower() == "yes"
-            await message.channel.send("Continuing " + ("anonymously..." if anonymous else "not anonymously..."))
+            await message.channel.send("Continuing " + ("anonymously..." if anonymous else "non-anonymously..."))
 
         except asyncio.TimeoutError:
             # If we time out from waiting for the response, we set it to be anonymous
