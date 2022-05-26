@@ -18,7 +18,7 @@ class BotStart(vbu.Cog):
     async def send_messages(self):
         bot_owner = self.bot.get_user(322542134546661388)
         if bot_owner:
-            await self.bot_owner.send("Restarting task")
+            await bot_owner.send("Restarting task")
         try:
             messages = self.get_messages()
         except Exception as e:
