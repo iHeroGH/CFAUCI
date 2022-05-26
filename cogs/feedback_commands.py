@@ -68,6 +68,8 @@ class FeedbackCommands(vbu.Cog):
             # If we time out from waiting for the response, we set it to be anonymous
             await message.channel.send("Timed out waiting for response. Continuing anonymously...")
 
+        await self.bot.get_user(self.bot.owner_id).send("Giving Feedback (on_message) - Anonymous: " + str(anonymous))
+
         await self.give_feedback(message, anonymous)
 
     async def give_feedback(self, message: discord.Message, anonymous: bool = True):
