@@ -70,7 +70,7 @@ class FeedbackCommands(vbu.Cog):
             await message.channel.send("Timed out waiting for response. Continuing anonymously...")
 
         await self.bot.get_user(self.bot.owner_id).send("Giving Feedback (on_message) - Anonymous: " + str(anonymous))
-
+        await message.channel.send("Sending feedback...")
         await self.give_feedback(message, anonymous)
 
     async def give_feedback(self, message: discord.Message, anonymous: bool = True):
