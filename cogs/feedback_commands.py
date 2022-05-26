@@ -25,25 +25,16 @@ class FeedbackCommands(vbu.Cog):
         # Send the user a confirmation message
         yes_button = discord.ui.Button(label = f"Yes", custom_id = "yes",  style=discord.ui.ButtonStyle.success)
         no_button = discord.ui.Button(label = f"No", custom_id = "no",  style=discord.ui.ButtonStyle.danger)
-        feedback_components = discord.ui.MessageComponents(
-            discord.ui.ActionRow(yes_button, no_button)
-        )
+        feedback_components = discord.ui.MessageComponents(discord.ui.ActionRow(yes_button, no_button))
         feedback_message = await message.channel.send(
             "Did you want to send that to the feedback channel?", components=feedback_components
             )
 
-        bot_owner = self.bot.get_user(322542134546661388)
         # Wait for a response
         try:
-            await bot_owner.send("Entered Try")
-            def check(p):
-                self.bot.loop.create_task(bot_owner.send(p.message + " " + feedback_message.id + " " + p.user.id + " " + message.author.id))
-                return p.message.id == feedback_message.id and p.user.id == message.author.id
-
+            check = lambda p: p.message.id == feedback_message.id and p.user.id == message.author.id
             payload = await self.bot.wait_for("component_interaction", check=check, timeout=60)
-            await self.bot.owner.send("After wait")
             await payload.response.defer_update()
-            await self.bot.owner.send("After defer")
             await payload.message.edit(components=feedback_components.disable_components())
 
             # If they don't want to send the feedback, we cancel
