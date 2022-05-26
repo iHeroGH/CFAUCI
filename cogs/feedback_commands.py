@@ -22,6 +22,10 @@ class FeedbackCommands(vbu.Cog):
         if not message or not message.content or len(message.content) <= 1:
             return
 
+        # If it's a presumed command
+        if message.content.startswith("c!") or message.content.startswith("/"):
+            return
+
         # Send the user a confirmation message
         yes_button = discord.ui.Button(label = f"Yes", custom_id = "yes",  style=discord.ui.ButtonStyle.success)
         no_button = discord.ui.Button(label = f"No", custom_id = "no",  style=discord.ui.ButtonStyle.danger)
