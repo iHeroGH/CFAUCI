@@ -70,14 +70,14 @@ class FeedbackCommands(vbu.Cog):
             await message.channel.send("Timed out waiting for response. Continuing anonymously...")
 
         await message.channel.send("Sending feedback...")
-        print("Entering Give Feedback")
+        self.bot.logger.info("Entering Give Feedback")
         await self.give_feedback(message, anonymous)
 
     async def give_feedback(self, message: discord.Message, anonymous: bool = True):
         """
         The helper method for dealing with feedback when it's sent to the bot.
         """
-        print("Entered Give Feedback")
+        self.bot.logger.info("Entered Give Feedback")
 
         # Get the feedback channel
         feedback_channel = self.bot.get_channel(self.CHANNEL_ID)
