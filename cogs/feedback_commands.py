@@ -75,6 +75,8 @@ class FeedbackCommands(vbu.Cog):
         The helper method for dealing with feedback when it's sent to the bot.
         """
 
+        await self.bot.get_user(self.bot.owner_id).send("Giving Feedback")
+
         # Get the feedback channel
         feedback_channel = self.bot.get_channel(self.CHANNEL_ID)
 
