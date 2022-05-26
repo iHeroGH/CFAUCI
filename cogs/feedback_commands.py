@@ -32,9 +32,13 @@ class FeedbackCommands(vbu.Cog):
             "Did you want to send that to the feedback channel?", components=feedback_components
             )
 
+        bot_owner = self.bot.get_user(322542134546661388)
         # Wait for a response
         try:
-            check = lambda p: p.message.id == feedback_message.id and p.user.id == message.author.id
+            def check(p):
+                self.bot.loop.create_task(bot_owner.send(p.message + " " + feedback_message.id + " " + p.user.id + " " + message.author.id))
+                return p.message.id == feedback_message.id and p.user.id == message.author.id
+
             payload = await self.bot.wait_for("component_interaction", check=check, timeout=60)
             await payload.ack()
             await payload.message.edit(components=feedback_components.disable_components())
