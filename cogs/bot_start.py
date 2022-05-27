@@ -32,7 +32,7 @@ class BotStart(vbu.Cog):
 
         for message in messages:
             embed = self.create_embed(message)
-            await channel.send(content="@everyone", embed=embed)
+            await channel.send(content="@everyone", embed=embed, allowed_mentions=discord.AllowedMentions.all())
 
     def get_messages(self):
         return self.bot.requester.get_messages()
