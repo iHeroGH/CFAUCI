@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 class BotStart(vbu.Cog):
 
     TIME_TO_WAIT = 0.5 # in hours
-    CHANNEL_ID = 913280990145830922
+    CHANNEL_ID = 913280556169592893
 
     def __init__(self, bot: vbu.Bot):
         super().__init__(bot)
@@ -32,7 +32,7 @@ class BotStart(vbu.Cog):
 
         for message in messages:
             embed = self.create_embed(message)
-            await channel.send(embed=embed)
+            await channel.send(content="@everyone", embed=embed)
 
     def get_messages(self):
         return self.bot.requester.get_messages()
