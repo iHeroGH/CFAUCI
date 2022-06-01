@@ -86,7 +86,7 @@ class FeedbackCommands(vbu.Cog):
         self.bot.logger.info("Entering Give Feedback")
         await self.give_feedback(message, anonymous, feedback_channel = None)
 
-    async def give_feedback(self, message: discord.Message, anonymous: bool = True):
+    async def give_feedback(self, message: discord.Message, anonymous: bool = True, feedback_channel: discord.TextChannel = None):
         """
         The helper method for dealing with feedback when it's sent to the bot.
         """
