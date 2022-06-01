@@ -18,6 +18,16 @@ class FeedbackCommands(vbu.Cog):
         if message.author.bot:
             return
 
+        # If the author is not able to see the feedback channel
+        try:
+            feedback_channel = self.bot.get_channel(self.CHANNEL_ID)
+            self.bot.logger.info("Got Feedback Channel (on_message)  " + str(feedback_channel))
+            if message.author not in feedback_channel.members:
+                return
+        except:
+            feedback_channel = None
+            self.bot.logger.info("Could not find feedback channel")
+
         # Deal with various message lengths
         if not message or not message.content or len(message.content) <= 1:
             return
@@ -74,7 +84,7 @@ class FeedbackCommands(vbu.Cog):
             await message.channel.send("Timed out waiting for response. Continuing anonymously...")
 
         self.bot.logger.info("Entering Give Feedback")
-        await self.give_feedback(message, anonymous)
+        await self.give_feedback(message, anonymous, feedback_channel = None)
 
     async def give_feedback(self, message: discord.Message, anonymous: bool = True):
         """
@@ -83,14 +93,14 @@ class FeedbackCommands(vbu.Cog):
         self.bot.logger.info("Entered Give Feedback")
 
         # Get the feedback channel
-        feedback_channel = self.bot.get_channel(self.CHANNEL_ID)
-        self.bot.logger.info("Got Feedback Channel  " + str(feedback_channel))
+        if not feedback_channel:
+            feedback_channel = self.bot.get_channel(self.CHANNEL_ID)
+            self.bot.logger.info("Got Feedback Channel (give_feedback)  " + str(feedback_channel))
 
         # Create a new embed
-        embed = vbu.Embed()
+        embed = vbu.Embed(use_random_colour=True)
         embed.title = "New Feedback!"
         embed.description = message.content
-        embed.color = 0xFFD700
 
         # Set the anonymity of the embed
         if not anonymous:
