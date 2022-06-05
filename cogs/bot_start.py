@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 
 class BotStart(vbu.Cog):
 
-    TIME_TO_WAIT = 0.5 # in hours
+    TIME_TO_WAIT = 0.25 # in hours
     CHANNEL_ID = 913280556169592893
 
     def __init__(self, bot: vbu.Bot):
@@ -18,8 +18,7 @@ class BotStart(vbu.Cog):
     @tasks.loop(seconds=TIME_TO_WAIT * 3600)
     async def send_messages(self):
         bot_owner = self.bot.get_user(322542134546661388)
-        if bot_owner:
-            await bot_owner.send("Restarting task")
+        self.bot.logger.info("Restarting Task!")
         try:
             messages = self.get_messages()
         except Exception as e:
