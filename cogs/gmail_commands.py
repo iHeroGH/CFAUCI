@@ -6,6 +6,7 @@ from cogs.bot_start import BotStart
 class GmailCommands(vbu.Cog):
 
     @commands.command()
+    @commands.has_permissions(manage_guild=True)
     async def force_get_messages(self, ctx: vbu.Context):
         """
         Forces the bot to read all messages from the inbox
