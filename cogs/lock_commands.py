@@ -28,13 +28,13 @@ class LockCommands(vbu.Cog):
         """
         Locks the work channels
         """
-        self.edit_work_perms(ctx, False)
+        await self.edit_work_perms(ctx, False)
 
     async def unlock_work_channels(self, ctx):
         """
         Unlocks the work channels
         """
-        self.edit_work_perms(ctx)
+        await self.edit_work_perms(ctx)
 
     # COMMANDS
     @commands.command()
@@ -44,7 +44,7 @@ class LockCommands(vbu.Cog):
         Locks all the channels in the work category.
         """
 
-        self.lock_work_channels(ctx)
+        await self.lock_work_channels(ctx)
         await ctx.okay()
 
     @commands.command()
@@ -54,7 +54,7 @@ class LockCommands(vbu.Cog):
         Unlocks all the channels in the work category.
         """
 
-        self.unlock_work_channels(ctx)
+        await self.unlock_work_channels(ctx)
         await ctx.okay()
 
 
