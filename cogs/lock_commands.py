@@ -23,6 +23,12 @@ class LockCommands(vbu.Cog):
         overwrite.read_messages = perms
         await cat.set_permissions(def_role, overwrite = overwrite)
 
+        # Rename the channel
+        if perms is None:
+            await cat.edit(name = "Work (Sunday Mode)")
+        else:
+            await cat.edit(name = "Work")
+
     # DELEGATOR METHODS
     async def lock_work_channels(self, ctx):
         """
