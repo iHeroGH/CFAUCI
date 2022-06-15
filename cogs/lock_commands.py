@@ -25,9 +25,9 @@ class LockCommands(vbu.Cog):
 
         # Rename the channel
         if perms is None:
-            await cat.edit(name = "Work (Sunday Mode)")
-        else:
             await cat.edit(name = "Work")
+        else:
+            await cat.edit(name = "Work (Sunday Mode)")
 
     # DELEGATOR METHODS
     async def lock_work_channels(self, ctx):
