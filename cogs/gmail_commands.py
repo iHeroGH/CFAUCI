@@ -16,7 +16,7 @@ class GmailCommands(vbu.Cog):
         channel = channel or ctx.channel
 
         for message in messages:
-            embed = BotStart.create_embed(message)
+            embed = BotStart.create_embed(BotStart, message)
             await channel.send(embed=embed)
 
         await ctx.okay()
@@ -29,7 +29,7 @@ class GmailCommands(vbu.Cog):
         """
         channel = channel or ctx.channel
 
-        embed = BotStart.get_weekly_embed()
+        embed = BotStart.get_weekly_embed(BotStart)
         await channel.send(embed=embed)
         await ctx.okay()
 
