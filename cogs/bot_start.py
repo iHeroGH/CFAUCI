@@ -31,17 +31,20 @@ class BotStart(vbu.Cog):
         channel = self.bot.get_channel(self.CHANNEL_ID)
 
         for message in messages:
-            embed = self.create_embed(message)
-            await channel.send(content="@everyone", embed=embed, allowed_mentions=AllowedMentions.all())
+            if "weeklyemail" in message["subject"].replace(" ", "").lower():
+                embed = self.get_weekly_embed()
+                await channel.send(embed=embed)
+            else:
+                embed = self.create_embed(message)
+                await channel.send(content="@everyone", embed=embed, allowed_mentions=AllowedMentions.all())
 
     def get_messages(self):
         return self.bot.requester.get_messages()
 
     def create_embed(self, message):
-        embed = vbu.Embed()
+        embed = vbu.Embed(use_random_colour=True)
 
         embed.title = "New Email!"
-        embed.color = 0xFF00FF
 
         body = message['body']
         if 'html_body' in message.keys():
@@ -56,6 +59,14 @@ class BotStart(vbu.Cog):
         embed.add_field(name = subject , value = body, inline=False)
 
         embed.description = "*Make sure to check the email through your inbox! Messages displayed here may be incorrect or incomplete*\n.\n.\n.\n"
+
+        return embed
+
+    def get_weekly_embed(self):
+        embed = vbu.Embed(use_random_colour=True)
+
+        embed.title = "Weekly Email!"
+        embed.description = "Make sure to check your inbox for your trainer's email! (There might be a survey!)"
 
         return embed
 

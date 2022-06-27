@@ -29,7 +29,8 @@ class GmailCommands(vbu.Cog):
         """
         channel = channel or ctx.channel
 
-        await channel.send("Weekly emails are being sent out! Make sure to check your inbox for your trainer's email.")
+        embed = BotStart.get_weekly_embed()
+        await channel.send(embed=embed)
         await ctx.okay()
 
 def setup(bot: vbu.Bot):
