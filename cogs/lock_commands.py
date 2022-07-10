@@ -53,6 +53,8 @@ class LockCommands(vbu.Cog):
 
         # Set up our vars
         chan = self.bot.get_channel(914719765875019786) # The general-work channel
+        if not chan: # Fetch the channel if we can't just get it
+            chan = await self.bot.fetch_channel(914719765875019786)
         cat = chan.category # The entire work category
         def_role = chan.guild.default_role # The 'everyone' role
 
