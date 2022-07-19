@@ -109,6 +109,17 @@ class LockCommands(vbu.Cog):
         await self.unlock_work_channels()
         await ctx.okay()
 
+    @commands.command()
+    @commands.has_permissions(manage_guild=True)
+    async def check_locking(self, ctx: vbu.Context):
+        """
+        A command to run the checking task manually.
+        """
+
+        self.bot.logger.info("Checking work channels manually")
+        await self.check_cat_lock()
+        await ctx.okay()
+
 
 def setup(bot: vbu.Bot):
     x = LockCommands(bot)
