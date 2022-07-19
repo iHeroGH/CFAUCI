@@ -35,7 +35,7 @@ class LockCommands(vbu.Cog):
         pst = pytz.timezone("US/Pacific")
         now = dt.datetime.now(pst)
 
-        return now.weekday() == 6 and now.hour >= 3
+        return now.weekday() == 0 and now.hour >= 3
 
     # Stock task when cog is unloaded
     def cog_unload(self):
