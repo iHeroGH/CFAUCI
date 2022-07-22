@@ -37,14 +37,10 @@ class LockCommands(vbu.Cog):
 
         return now.weekday() == 6 and now.hour >= 3
 
-    # Stock task when cog is unloaded
-    def cog_unload(self):
-        self.check_cat_lock.cancel()
-
     # PERMISSIONS EDITOR
     async def edit_work_perms(self, perms: discord.PermissionOverwrite = None):
         """
-        Edits the permissions of the work category
+        Edits the permissions of the work category to None (only TM can access) or False (No one can access)
         """
         self.bot.logger.info("Editing work category permissions to: " + str(perms))
         # We don't want to set the perm to True, just None or False
@@ -52,6 +48,7 @@ class LockCommands(vbu.Cog):
             perms = None
 
         # Set up our vars
+        await self.bot.wait_until_ready()
         chan = self.bot.get_channel(914719765875019786) # The general-work channel
         if not chan: # Fetch the channel if we can't just get it
             chan = await self.bot.fetch_channel(914719765875019786)
@@ -119,6 +116,10 @@ class LockCommands(vbu.Cog):
         self.bot.logger.info("Checking work channels manually")
         await self.check_cat_lock()
         await ctx.okay()
+
+    # Stop task when cog is unloaded
+    def cog_unload(self):
+        self.check_cat_lock.cancel()
 
 
 def setup(bot: vbu.Bot):

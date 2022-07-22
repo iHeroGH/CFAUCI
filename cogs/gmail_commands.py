@@ -1,27 +1,26 @@
 from discord.ext import commands, vbu
 import discord
 
-from cogs.GmailConnection.requester import Requester
-from cogs.bot_start import BotStart
+from cogs.email_notifier import EmailNotifier
 
 class GmailCommands(vbu.Cog):
 
-    @commands.command()
+    @commands.command(aliases=['fse', 'send_emails'])
     @commands.has_permissions(manage_guild=True)
-    async def force_get_messages(self, ctx: vbu.Context, channel: discord.TextChannel = None):
+    async def force_send_emails(self, ctx: vbu.Context, channel: discord.TextChannel = None):
         """
         Forces the bot to read all messages from the inbox
         """
-        messages = self.bot.requester.get_messages()
+        messages = self.bot.requester.get_new_emails()
         channel = channel or ctx.channel
 
         for message in messages:
-            embed = BotStart.create_embed(BotStart, message)
+            embed = EmailNotifier.create_embed(message)
             await channel.send(embed=embed)
 
         await ctx.okay()
 
-    @commands.command()
+    @commands.command(aliases=['fwa', 'weekly', 'force_weekly'])
     @commands.has_permissions(manage_guild=True)
     async def force_weekly_announcement(self, ctx: vbu.Context, channel: discord.TextChannel = None):
         """
@@ -29,7 +28,7 @@ class GmailCommands(vbu.Cog):
         """
         channel = channel or ctx.channel
 
-        embed = BotStart.get_weekly_embed(BotStart)
+        embed = EmailNotifier.get_weekly_embed()
         await channel.send(embed=embed)
         await ctx.okay()
 

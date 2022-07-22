@@ -89,6 +89,7 @@ class FeedbackCommands(vbu.Cog):
     async def give_feedback(self, message: discord.Message, anonymous: bool = True, feedback_channel: discord.TextChannel = None):
         """
         The helper method for dealing with feedback when it's sent to the bot.
+        This is where we create an embed and send it to the feedback channel anonymously or not
         """
         self.bot.logger.info("Entered Give Feedback")
 
