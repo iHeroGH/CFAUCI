@@ -30,7 +30,7 @@ class Requester:
         """
         self.client.select('inbox')
 
-    def get_new_emails(self) -> list[dict]:
+    def get_new_emails(self):
         """
         Scans for new emails from the 03260 CFA email address
         Returns a list of dicts of mail information (subject, content, html content)
