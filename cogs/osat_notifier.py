@@ -10,7 +10,7 @@ import re
 class OsatNotifier(vbu.Cog):
 
     TIME_TO_WAIT = 0.25 # in hours
-    CHANNEL_ID = 913280990145830922 # Admin Bot Commands
+    CHANNEL_ID = 913280556169592893 # Announcements
 
     def __init__(self, bot: vbu.Bot):
         super().__init__(bot)
