@@ -78,7 +78,7 @@ class OsatNotifier(vbu.Cog):
     def get_scores_from_message(message: dict):
         # Make the OSAT email parseable
         osat_info = BeautifulSoup(message['html_body']).get_text()
-        osat_info = "|".join(osat_info.split("\n")[2:])
+        osat_info = "|".join(osat_info.split("\n"))
 
         # Parse the osat message and create an embed
         score_matches = re.finditer(r'\|(?P<Category>[a-zA-Z /]*)\|(?P<Score>\d\d)%', osat_info)
