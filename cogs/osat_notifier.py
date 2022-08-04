@@ -82,7 +82,7 @@ class OsatNotifier(vbu.Cog):
 
         # Parse the osat message and create an embed
         score_matches = re.finditer(r'\|(?P<Category>[a-zA-Z /]*)\|(?P<Score>\d\d)%', osat_info)
-        score_dict = {f"{i.group('Category').replace('|', '')}": i.group('Score') for i in score_matches}
+        score_dict = {f"{i.group('Category').replace('|', '')}": int(i.group('Score')) for i in score_matches}
 
         return score_dict
 
