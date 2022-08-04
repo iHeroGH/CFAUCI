@@ -78,8 +78,14 @@ class OsatNotifier(vbu.Cog):
         osat_info = "|".join(osat_info.split("\n"))
 
         # Parse the osat message and create an embed
-        score_matches = re.finditer(r'\|(?P<Category>[a-zA-Z /]*)\|(?P<Score>\d\d)%', osat_info)
-        score_dict = {f"{i.group('Category').replace('|', '')}": int(i.group('Score')) for i in score_matches}
+        score_matches = re.finditer(r'\|(?P<Category>[a-zA-Z /]*)\|(?P<Score>\d*)%\|(?P<NSurveys>\d*)\|', osat_info)
+
+        score_dict = {}
+        for match in score_matches:
+            score_dict[match.group('Category')] = int(match.group('Score'))
+
+            if match.group('Category') == 'Overall Satisfaction':
+                score_dict['NSurveys'] = match.group('NSurveys')
 
         return score_dict
 
@@ -88,7 +94,12 @@ class OsatNotifier(vbu.Cog):
         """
         Makes a nice lookin' embed given an OSAT score dictionary
         """
-        embed = vbu.Embed(title="OSAT Scores")
+        embed = vbu.Embed()
+
+        embed.title = "OSAT Scores"
+
+        if "NSurveys" in scores_dict.keys():
+            embed.title = f"OSAT Scores - {scores_dict['NSurveys']} surveys"
 
         overall_sat = scores_dict["Overall Satisfaction"]
         if overall_sat >= 70:
