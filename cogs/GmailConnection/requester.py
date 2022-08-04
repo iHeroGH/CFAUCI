@@ -65,7 +65,7 @@ class Requester:
 
         return all_messages
 
-    def get_osat_email(self) -> dict:
+    def get_osat_email(self, is_task: bool = True) -> dict:
         """
         Gets the most recent Quickscores email
         """
@@ -73,7 +73,10 @@ class Requester:
         self.get_inbox()
         # The thrown var is a status check
         # Search data is a list of bytes
-        _, search_data = self.client.search(None, 'FROM', "SMGMailMgr@whysmg.com")
+        if is_task:
+            _, search_data = self.client.search(None, 'FROM', "SMGMailMgr@whysmg.com", "UNSEEN")
+        else:
+            _, search_data = self.client.search(None, 'FROM', "SMGMailMgr@whysmg.com")
 
         search_data = search_data[0].split()
 
