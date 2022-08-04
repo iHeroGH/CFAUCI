@@ -34,22 +34,16 @@ class OsatNotifier(vbu.Cog):
         bot_owner = self.bot.get_user(322542134546661388)
         self.bot.logger.info("Restarting OSAT Task!")
 
-        # If we aren't automatically checking the email, then we're running this command manually
-        # If we are running this command manually, then we just want the latest OSAT scores
-        # We only get the latest OSAT scores if we have them, though
-        if not is_task and self.latest_osat_message and not override:
-            message = self.latest_osat_message
-        else:
-            # If we're automatically checking the email, or we don't have the latest scores, then we try to get them
-            try:
-                message = self.bot.requester.get_osat_email()
-            # Send a message to the owner if we run into a problem
-            except Exception as e:
-                if bot_owner:
-                    await bot_owner.send(e)
-                self.bot.requester.__login__()
-                self.send_osat_email.restart()
-                return
+        # We try to get the latest email
+        try:
+            message = self.bot.requester.get_osat_email()
+        # Send a message to the owner if we run into a problem
+        except Exception as e:
+            if bot_owner:
+                await bot_owner.send(e)
+            self.bot.requester.__login__()
+            self.send_osat_email.restart()
+            return
 
         # If we couldn't find a message and we aren't overriding the scores, we don't have any scores to display
         if not message and not override:
