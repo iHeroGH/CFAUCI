@@ -59,7 +59,7 @@ class OsatNotifier(vbu.Cog):
         self.latest_osat_message = message
 
         curr_scores_dict = self.get_scores_from_message(message)
-        old_scores_dict = self.get_scores_from_message(old_osat)
+        old_scores_dict = {} if not old_osat else self.get_scores_from_message(old_osat)
 
         embed = self.create_embed(curr_scores_dict, old_scores_dict)
 
