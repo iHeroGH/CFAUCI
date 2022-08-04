@@ -64,7 +64,10 @@ class OsatNotifier(vbu.Cog):
         embed = self.create_embed(curr_scores_dict, old_scores_dict)
 
         if old_osat != self.latest_osat_message: # Announce
-            await self.bot.get_channel(self.CHANNEL_ID).send(embed=embed)
+            if is_task:
+                await self.bot.get_channel(self.CHANNEL_ID).send(embed=embed)
+            else:
+                await ctx.send(embed=embed)
         else: # Don't announce
             await ctx.send(embed=embed)
 
