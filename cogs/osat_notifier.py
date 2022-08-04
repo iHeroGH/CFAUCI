@@ -115,6 +115,8 @@ class OsatNotifier(vbu.Cog):
         score_message = ""
         # Go through each category to get its score
         for category, score in scores_dict.items():
+            if category == "NSurveys":
+                continue
             # If we have a set of old scores, then we want to compare the old score to the new score
             if old_scores_dict:
                 old_score = old_scores_dict[category]
