@@ -42,7 +42,7 @@ class OsatNotifier(vbu.Cog):
         else:
             # If we're automatically checking the email, or we don't have the latest scores, then we try to get them
             try:
-                message = self.bot.requester.get_osat_email(is_task)
+                message = self.bot.requester.get_osat_email()
             # Send a message to the owner if we run into a problem
             except Exception as e:
                 if bot_owner:
