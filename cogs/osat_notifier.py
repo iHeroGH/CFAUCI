@@ -100,9 +100,9 @@ class OsatNotifier(vbu.Cog):
 
         if "NSurveys" in scores_dict.keys():
             if old_scores_dict and "NSurveys" in old_scores_dict.keys():
-                embed.title = f"OSAT Scores - {old_scores_dict['NSurveys']} -> {scores_dict['NSurveys']}"
+                embed.title = f"OSAT Scores - #{old_scores_dict['NSurveys']} -> {scores_dict['NSurveys']} surveys"
             else:
-                embed.title = f"OSAT Scores - {scores_dict['NSurveys']} surveys"
+                embed.title = f"OSAT Scores - #{scores_dict['NSurveys']} surveys"
 
         overall_sat = scores_dict["Overall Satisfaction"]
         if overall_sat >= 70:
