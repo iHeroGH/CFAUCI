@@ -115,7 +115,8 @@ class OsatNotifier(vbu.Cog):
                 if old_score < score:
                     ident = ":green_heart:"
                 elif old_score == score:
-                    ident = ":yellow_heart:"
+                    score_message += f"**{category}**: {score}%\n"
+                    continue
                 else:
                     ident = ":heart:"
 
