@@ -36,7 +36,7 @@ class OsatNotifier(vbu.Cog):
 
         # We try to get the latest email
         try:
-            message = self.bot.requester.get_osat_email()
+            message = self.bot.requester.get_osat_email(is_task)
         # Send a message to the owner if we run into a problem
         except Exception as e:
             if bot_owner:
