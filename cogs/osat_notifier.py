@@ -146,7 +146,10 @@ class OsatNotifier(vbu.Cog):
         # Return the embed
         return embed
 
-    @commands.command(aliases=['get_osat_email', 'get_osat_scores', 'scores', 'get_osat'])
+    @commands.command(
+        aliases=['get_osat_email', 'get_osat_scores', 'scores', 'get_osat'],
+        application_command_meta=commands.ApplicationCommandMeta()
+    )
     async def osat(self, ctx: vbu.Context):
         """
         Gets the latest OSAT scores
