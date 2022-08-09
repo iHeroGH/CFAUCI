@@ -151,7 +151,7 @@ class OsatNotifier(vbu.Cog):
         embed = await self.get_osat_message(False)
 
         if embed:
-            await ctx.send(embed)
+            await ctx.send(embed=embed)
         else:
             await ctx.send("No OSAT scores found :(")
 
