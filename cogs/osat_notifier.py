@@ -26,9 +26,11 @@ class OsatNotifier(vbu.Cog):
         The email check task that checks if any new OSAT emails were sent and announes them in the announcement channel
         """
 
-        await self.get_osat_email()
+        embed = await self.get_osat_message()
+        if embed:
+            await self.bot.get_channel(self.CHANNEL_ID).send(embed=embed)
 
-    async def get_osat_email(self, is_task: bool = True, ctx: vbu.Context = None, override: dict = None):
+    async def get_osat_message(self, is_task: bool = True, override: dict = None):
         await self.bot.wait_until_ready()
 
         bot_owner = self.bot.get_user(322542134546661388)
@@ -36,7 +38,7 @@ class OsatNotifier(vbu.Cog):
 
         # We try to get the latest email
         try:
-            message = self.bot.requester.get_osat_email(is_task)
+            message = self.bot.requester.fetch_osat_email(is_task)
         # Send a message to the owner if we run into a problem
         except Exception as e:
             if bot_owner:
@@ -47,8 +49,6 @@ class OsatNotifier(vbu.Cog):
 
         # If we couldn't find a message and we aren't overriding the scores, we don't have any scores to display
         if not message and not override:
-            if not is_task:
-                await ctx.send("No OSAT scores found! :(")
             return
 
         # Override the message if there's an override provided
@@ -63,13 +63,7 @@ class OsatNotifier(vbu.Cog):
 
         embed = self.create_embed(curr_scores_dict, old_scores_dict)
 
-        if old_scores_dict != curr_scores_dict: # Announce
-            if is_task:
-                await self.bot.get_channel(self.CHANNEL_ID).send(embed=embed)
-            elif ctx:
-                await ctx.send(embed=embed)
-        else: # Don't announce
-            await ctx.send(embed=embed)
+        return embed
 
     @staticmethod
     def get_scores_from_message(message: dict):
@@ -147,15 +141,19 @@ class OsatNotifier(vbu.Cog):
         return embed
 
     @commands.command(
-        aliases=['get_osat_email', 'get_osat_scores', 'scores', 'get_osat'],
+        aliases=['get_osat_email', 'get_osat_scores', 'scores', 'get_osat', 'get_osat_message'],
         application_command_meta=commands.ApplicationCommandMeta()
     )
     async def osat(self, ctx: vbu.Context):
         """
         Gets the latest OSAT scores
         """
-        await self.get_osat_email(False, ctx)
-        await ctx.okay()
+        embed = await self.get_osat_message(False)
+
+        if embed:
+            await ctx.send(embed)
+        else:
+            await ctx.send("No OSAT scores found :(")
 
     def cog_unload(self):
         self.send_osat_email.cancel()

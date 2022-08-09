@@ -65,7 +65,7 @@ class Requester:
 
         return all_messages
 
-    def get_osat_email(self, is_task: bool = True) -> dict:
+    def fetch_osat_email(self, is_task: bool = True) -> dict:
         """
         Gets the most recent Quickscores email
         """
