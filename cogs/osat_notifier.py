@@ -112,6 +112,8 @@ class OsatNotifier(vbu.Cog):
             for cat_abbreviation, cat_name in self.osat_abbreviations.items():
                 scores_dict[cat_name] = category[cat_abbreviation]
 
+        return scores_dict
+
 
     async def add_scores_to_db(self, curr_scores_dict: dict):
 
