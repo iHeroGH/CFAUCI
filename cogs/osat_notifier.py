@@ -124,7 +124,14 @@ class OsatNotifier(vbu.Cog):
             speed = $5,
             accuracy = $6,
             clean = $7""",
-            *curr_scores_dict.values())
+            curr_scores_dict['Overall Satisfaction'],
+            curr_scores_dict['NSurveys'],
+            curr_scores_dict['Taste'],
+            curr_scores_dict['Attentive/Courteous'],
+            curr_scores_dict['Fast Service'],
+            curr_scores_dict['Order Accuracy'],
+            curr_scores_dict['Cleanliness Combined'])
+
 
     @staticmethod
     def create_embed(scores_dict: dict, old_scores_dict: dict = None):
