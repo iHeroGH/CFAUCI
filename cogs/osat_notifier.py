@@ -117,13 +117,13 @@ class OsatNotifier(vbu.Cog):
 
         async with self.bot.database() as db:
             await db("""UPDATE osat_scores SET
-            osat = %1,
-            nsurveys = %2,
-            taste = %3,
-            ace = %4,
-            speed = %5,
-            accuracy = %6,
-            clean = %7""",
+            osat = $1,
+            nsurveys = $2,
+            taste = $3,
+            ace = $4,
+            speed = $5,
+            accuracy = $6,
+            clean = $7""",
             *curr_scores_dict.values())
 
     @staticmethod
