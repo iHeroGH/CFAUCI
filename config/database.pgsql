@@ -48,4 +48,4 @@ CREATE TABLE IF NOT EXISTS osat_scores(
     speed INTEGER,
     accuracy INTEGER,
     nsurvey INTEGER
-)
+);
