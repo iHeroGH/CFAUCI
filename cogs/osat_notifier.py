@@ -118,7 +118,7 @@ class OsatNotifier(vbu.Cog):
         async with self.bot.database() as db:
             await db("""UPDATE osat_scores SET
             osat = $1,
-            nsurveys = $2,
+            nsurvey = $2,
             taste = $3,
             ace = $4,
             speed = $5,
