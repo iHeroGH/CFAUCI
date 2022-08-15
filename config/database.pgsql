@@ -39,3 +39,13 @@ CREATE TABLE IF NOT EXISTS user_settings(
 -- );
 -- A list of channel: value mappings should you need one.
 -- This is not required for VBU, so is commented out by default.
+
+CREATE TABLE IF NOT EXISTS osat_scores(
+    osat INTEGER,
+    clean INTEGER,
+    taste INTEGER,
+    ace INTEGER,
+    speed INTEGER,
+    accuracy INTEGER,
+    nsurvey INTEGER
+)

@@ -17,8 +17,18 @@ class OsatNotifier(vbu.Cog):
         self.send_osat_email.start()
 
         self.latest_osat_message: dict = None
-
         self.bot: vbu.Bot
+
+        self.osat_abbreviations = {
+            "osat": "Overall Satisfaction",
+            "clean": "Cleanliness Combined",
+            "taste": "Taste",
+            "ace": "Attentive/Courteous",
+            "speed": "Fast Service",
+            "accuracy": "Order Accuracy",
+            "nsurvey": "NSurveys"
+        }
+
 
     @tasks.loop(seconds=TIME_TO_WAIT * 3600)
     async def send_osat_email(self):
@@ -58,11 +68,21 @@ class OsatNotifier(vbu.Cog):
         old_osat = self.latest_osat_message
         self.latest_osat_message = message
 
+        # The current scores
         curr_scores_dict = self.get_scores_from_message(message)
-        old_scores_dict = {} if not old_osat else self.get_scores_from_message(old_osat)
 
+        # If we don't have the latest scores cached, we search from the DB
+        old_scores_dict = {}
+        if not old_osat:
+            old_scores_dict = await self.get_scores_from_db()
+        else:
+            old_scores_dict = self.get_scores_from_message(old_osat)
+
+        # Add the current scores to the db
+        await self.add_scores_to_db(curr_scores_dict)
+
+        # Create and return the embed
         embed = self.create_embed(curr_scores_dict, old_scores_dict)
-
         return embed
 
     @staticmethod
@@ -79,9 +99,32 @@ class OsatNotifier(vbu.Cog):
             score_dict[match.group('Category')] = int(match.group('Score'))
 
             if match.group('Category') == 'Overall Satisfaction':
-                score_dict['NSurveys'] = match.group('NSurveys')
+                score_dict['NSurveys'] = int(match.group('NSurveys'))
 
         return score_dict
+
+    async def get_scores_from_db(self):
+        async with self.bot.database() as db:
+            scores_rows = await db("SELECT * FROM osat_scores")
+
+        scores_dict = {}
+        for category in scores_rows:
+            for cat_abbreviation, cat_name in self.osat_abbreviations.items():
+                scores_dict[cat_name] = category[cat_abbreviation]
+
+
+    async def add_scores_to_db(self, curr_scores_dict: dict):
+
+        async with self.bot.database() as db:
+            await db("""UPDATE osat_scores SET
+            osat = %1,
+            nsurveys = %2,
+            taste = %3,
+            ace = %4,
+            speed = %5,
+            accuracy = %6,
+            clean = %7""",
+            *curr_scores_dict.values())
 
     @staticmethod
     def create_embed(scores_dict: dict, old_scores_dict: dict = None):
