@@ -20,12 +20,18 @@ class LockCommands(vbu.Cog):
         """
         Check if it is a Sunday
         """
-        if self.is_sunday():
-            self.logger.info("Sunday detected")
-            await self.lock_work_channels()
-        else:
-            self.logger.info("Sunday not detected")
-            await self.unlock_work_channels()
+        self.bot.logger.info("Checking if it is a Sunday")
+
+        try:
+            if self.is_sunday():
+                self.logger.info("Sunday detected")
+                await self.lock_work_channels()
+            else:
+                self.logger.info("Sunday not detected")
+                await self.unlock_work_channels()
+        except Exception as e:
+            self.logger.error("Something went wrong checking if it is a Sunday: " + str(e))
+            self.check_cat_lock.restart()
 
     # Helpers
     def is_sunday(self):
