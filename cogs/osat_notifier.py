@@ -134,7 +134,7 @@ class OsatNotifier(vbu.Cog):
             curr_scores_dict['Order Accuracy'],
             curr_scores_dict['Cleanliness Combined'])
 
-            if 'date' not in message.keys:
+            if 'date' not in message.keys():
                 return
 
             await db("""UPDATE osat_over_time SET
