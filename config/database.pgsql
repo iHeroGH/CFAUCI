@@ -49,3 +49,8 @@ CREATE TABLE IF NOT EXISTS osat_scores(
     accuracy INTEGER,
     nsurvey INTEGER
 );
+
+CREATE TABLE IF NOT EXISTS osat_over_time(
+    osat_date DATE[],
+    osat_score INTEGER[]
+);
