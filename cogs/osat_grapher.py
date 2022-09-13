@@ -29,6 +29,9 @@ class OSATGrapher(vbu.Cog):
         # Create the labels for the x-axis data
         x_tick_labels = [f"{i.month}/{i.day}" for i in days]
         plt.xticks(days, x_tick_labels)
+        # Create label for x-axis and y-axis
+        plt.xlabel("Day")
+        plt.ylabel("Score (%)")
 
         # Save the graph and send it
         plt.savefig("osat.png")
