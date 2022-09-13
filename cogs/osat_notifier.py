@@ -79,7 +79,7 @@ class OsatNotifier(vbu.Cog):
             old_scores_dict = self.get_scores_from_message(old_osat)
 
         # Add the current scores to the db
-        await self.add_scores_to_db(curr_scores_dict, message['date'])
+        await self.add_scores_to_db(curr_scores_dict, message)
 
         # Create and return the embed
         embed = self.create_embed(curr_scores_dict, old_scores_dict)
