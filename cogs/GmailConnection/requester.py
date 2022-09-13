@@ -90,7 +90,8 @@ class Requester:
         message: mailbox.MaildirMessage = mailbox.MaildirMessage(message_bytes)
 
         email_data = {}
-        email_data['date'] = dt.datetime.fromtimestamp(message.get_date())
+        if 'Date' in message.keys():
+            email_data['date'] = dt.datetime.strptime(message['Date'], "%d %b %Y %H:%M:%S %z")
 
         for part in message.walk():
             content_type = part.get_content_type()
