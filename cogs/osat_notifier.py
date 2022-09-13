@@ -79,7 +79,7 @@ class OsatNotifier(vbu.Cog):
             old_scores_dict = self.get_scores_from_message(old_osat)
 
         # Add the current scores to the db
-        await self.add_scores_to_db(curr_scores_dict)
+        await self.add_scores_to_db(curr_scores_dict, message['date'])
 
         # Create and return the embed
         embed = self.create_embed(curr_scores_dict, old_scores_dict)
@@ -115,7 +115,7 @@ class OsatNotifier(vbu.Cog):
         return scores_dict
 
 
-    async def add_scores_to_db(self, curr_scores_dict: dict):
+    async def add_scores_to_db(self, curr_scores_dict: dict, message: dict):
 
         async with self.bot.database() as db:
             await db("""UPDATE osat_scores SET
@@ -133,6 +133,13 @@ class OsatNotifier(vbu.Cog):
             curr_scores_dict['Fast Service'],
             curr_scores_dict['Order Accuracy'],
             curr_scores_dict['Cleanliness Combined'])
+
+            if 'date' not in message.keys:
+                return
+
+            await db("""UPDATE osat_over_time SET
+            osat_date = array_append(osat_date, $1),
+            osat_score = array_append(osat_score, $2)""", message['date'], curr_scores_dict['Overall Satisfaction'])
 
 
     @staticmethod

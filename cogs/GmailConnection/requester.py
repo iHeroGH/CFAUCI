@@ -89,6 +89,7 @@ class Requester:
         message: mailbox.MaildirMessage = mailbox.MaildirMessage(message_bytes)
 
         email_data = {}
+        email_data['date'] = message.get_date()
         for part in message.walk():
             content_type = part.get_content_type()
 
