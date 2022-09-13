@@ -12,7 +12,7 @@ class OSATGrapher(vbu.Cog):
         Graphs all the available OSAT scores
         """
         # Get the days and the scores lists from the database
-        days, scores = self.get_db_info()
+        days, scores = await self.get_db_info()
 
         if not days or not scores or (len(days) != len(scores)):
             return await ctx.send("Something has gone catastrophically wrong with the database. No scores were found.")
