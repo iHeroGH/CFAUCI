@@ -6,7 +6,7 @@ import numpy as np
 
 class OSATGrapher(vbu.Cog):
 
-    @commands.command()
+    @commands.command(aliases=['graphosat', 'osatgraph'], application_command_meta=commands.ApplicationCommandMeta())
     async def graph(self, ctx: vbu.Context):
         """
         Graphs all the available OSAT scores
