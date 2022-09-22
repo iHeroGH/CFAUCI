@@ -24,8 +24,8 @@ class OSATGrapher(vbu.Cog):
         plt.axhline(y=70, color='r', linestyle=":")
 
         # FORMATTING
-        # Cut off the y-axis to between 50-80%
-        plt.ylim(50, 80)
+        # Cut off the y-axis to between 50-80% with a step of 2 percent per tick
+        plt.yticks(50, 80, 2)
         # Create the labels for the x-axis data
         x_tick_labels = [f"{i.month}/{i.day}" for i in days]
         plt.xticks(days, x_tick_labels)
