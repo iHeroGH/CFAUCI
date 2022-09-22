@@ -19,7 +19,8 @@ class OSATGrapher(vbu.Cog):
 
         # PLOT DATA
         # Plot the days vs scores line
-        plt.plot(days, scores)
+        col = (np.random.random(), np.random.random(), np.random.random())
+        plt.plot(days, scores, color=col)
         # Plot the predicted region score
         plt.axhline(y=70, color='r', linestyle=":")
 
