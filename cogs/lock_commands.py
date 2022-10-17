@@ -7,7 +7,7 @@ import pytz
 class LockCommands(vbu.Cog):
 
     # TASK CALCULATOR
-    TIME_TO_WAIT = 0.30 # in hours
+    TIME_TO_WAIT = 0.25 # in hours
 
     # Start task when cog is loaded
     def __init__(self, bot: vbu.Bot):
