@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 
 class EmailNotifier(vbu.Cog):
 
-    TIME_TO_WAIT = 0.25 # in hours
+    TIME_TO_WAIT = 0.1 # in hours
     CHANNEL_ID = 913280556169592893 # Announcements
 
     def __init__(self, bot: vbu.Bot):
