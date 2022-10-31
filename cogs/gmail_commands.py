@@ -32,6 +32,19 @@ class GmailCommands(vbu.Cog):
         await channel.send(embed=embed)
         await ctx.okay()
 
+    @commands.command(aliases=['nfwa', 'nweekly', 'force_no_weekly'])
+    @commands.has_permissions(manage_guild=True)
+    async def force_no_weekly_announcement(self, ctx: vbu.Context, channel: discord.TextChannel = None):
+        """
+        Forces the bot to send the "there is no" weekly email announcement message
+        """
+        channel = channel or ctx.channel
+
+        embed = EmailNotifier.get_no_weekly_embed()
+        await channel.send(embed=embed)
+        await ctx.okay()
+
+
 def setup(bot: vbu.Bot):
     x = GmailCommands(bot)
     bot.add_cog(x)
