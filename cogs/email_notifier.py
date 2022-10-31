@@ -83,6 +83,19 @@ class EmailNotifier(vbu.Cog):
 
         return embed
 
+    @staticmethod
+    def get_no_weekly_embed():
+        """
+        Creates the nice lookin embed for when there's no weekly email - this doesn't change based on any parameters
+        It's the same embed every time (with a random color)
+        """
+        embed = vbu.Embed(use_random_colour=True)
+
+        embed.title = "No Weekly Email!"
+        embed.description = "There will not be a weekly email this week. Make sure to check your inbox for the most up-to-date info."
+
+        return embed
+
     def cog_unload(self):
         self.send_new_emails.cancel()
 
