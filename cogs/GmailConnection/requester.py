@@ -66,6 +66,42 @@ class Requester:
 
         return all_messages
 
+    def get_hs_emails(self):
+        """
+        Scans for new emails from the HotSchedules email address
+        Returns a list of dicts of mail information (subject, content, html content)
+        """
+        self.get_inbox()
+        # The thrown var is a status check
+        # Search data is a list of bytes
+        _, search_data = self.client.search(None, 'FROM', '"no-reply@hotschedules.com"', "UNSEEN")
+
+        all_messages = []
+        for message_num in search_data[0].split():
+            email_data = {}
+
+            _, message_data = self.client.fetch(message_num, '(RFC822)')
+            _, message_bytes = message_data[0]
+            message: mailbox.MaildirMessage = mailbox.MaildirMessage(message_bytes)
+
+            email_data["from"] = message["from"].replace(" <no-reply@hotschedules.com>", "").strip()
+            email_data["subject"] = message["subject"].strip().replace("Fwd: ", "")
+
+            for part in message.walk():
+                content_type = part.get_content_type()
+
+                if content_type == "text/plain":
+                    body = part.get_payload(decode=True)
+                    email_data['body'] = body.decode()
+
+                elif content_type == "text/html":
+                    html_body = part.get_payload(decode=True)
+                    email_data['html_body'] = html_body.decode()
+
+            all_messages.append(email_data)
+
+        return all_messages
+
     def get_osat_emails(self, is_task: bool = True) -> dict:
         """
         Gets the most recent Quickscores email
