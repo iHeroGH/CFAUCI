@@ -110,13 +110,13 @@ class HotSchedulesNotifier(vbu.Cog):
 
     @commands.command(aliases=['fsa', 'schedule', 'force_schedule'])
     @commands.has_permissions(manage_guild=True)
-    async def force_schedule_announcement(self, ctx: vbu.Context, channel: TextChannel = None):
+    async def force_schedule_announcement(self, ctx: vbu.Context, channel: TextChannel = None, start_time = None, end_time = None):
         """
         Forces the bot to send the "schedule has been posted" embed
         """
         channel = channel or ctx.channel
 
-        embed = self.get_schedule_embed()
+        embed = self.get_schedule_embed(start_time, end_time)
         await channel.send(embed=embed)
         await ctx.okay()
 
