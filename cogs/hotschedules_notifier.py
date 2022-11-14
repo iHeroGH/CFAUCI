@@ -33,7 +33,7 @@ class HotSchedulesNotifier(vbu.Cog):
             self.send_hotschedules_email.restart()
             return
 
-        announcement_channel = self.bot.get_channel(self.ANNOUNCEMENT_CHANNEL_ID)
+        announcement_channel = self.bot.get_channel(self.ANNOUNCEMENTS_CHANNEL_ID)
         hs_channel = self.bot.get_channel(self.HS_CHANNEL_ID)
 
         for message in messages:
