@@ -22,15 +22,11 @@ class EmailNotifier(vbu.Cog):
         The main email check task that checks if any new emails were sent and announes them in the announcement channel
         """
         await self.bot.wait_until_ready()
-
-        bot_owner = self.bot.get_user(322542134546661388)
         self.bot.logger.info("Restarting Email Task!")
 
         try:
             messages = self.bot.requester.get_new_emails()
         except Exception as e:
-            if bot_owner:
-                await bot_owner.send(e)
             self.bot.requester.__login__()
             self.send_new_emails.restart()
             return

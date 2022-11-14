@@ -43,16 +43,13 @@ class OsatNotifier(vbu.Cog):
     async def get_osat_message(self, is_task: bool = True, override: dict = None):
         await self.bot.wait_until_ready()
 
-        bot_owner = self.bot.get_user(322542134546661388)
         self.bot.logger.info("Restarting OSAT Task!")
 
         # We try to get the latest email
         try:
             message = self.bot.requester.get_osat_emails(is_task)
-        # Send a message to the owner if we run into a problem
+        # Create a new requester object if there's an issue
         except Exception as e:
-            if bot_owner:
-                await bot_owner.send(e)
             self.bot.requester.__login__()
             self.send_osat_email.restart()
             return
