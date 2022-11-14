@@ -59,7 +59,7 @@ class HotSchedulesNotifier(vbu.Cog):
         embed = vbu.Embed(use_random_colour=True)
 
         embed.title = "New HotSchedules Message!"
-        embed.description = f"New message found from {sender}! Check the HS app for timing details."
+        embed.description = f"New message found from **{sender}**! Check the HS app for timing details."
         embed.color = 0x0EA3D1 # HS Blue
 
         return embed
