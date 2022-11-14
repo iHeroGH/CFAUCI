@@ -10,7 +10,7 @@ class HotSchedulesNotifier(vbu.Cog):
 
     TIME_TO_WAIT = 0.1 # in hours
     ANNOUNCEMENTS_CHANNEL_ID = 913280556169592893 # Announcements
-    HS_CHANNEL_ID = 913255703651684372 # HotSchedules Channel
+    HS_CHANNEL_ID = 1041794711184216114 # HotSchedules Channel
 
     def __init__(self, bot: vbu.Bot):
         super().__init__(bot)
