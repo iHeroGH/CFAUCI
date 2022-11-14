@@ -133,7 +133,7 @@ class HotSchedulesNotifier(vbu.Cog):
     @commands.has_permissions(manage_guild=True)
     async def force_no_schedule_announcement(self, ctx: vbu.Context, channel: TextChannel = None):
         """
-            Forces the bot to send the "there is no" schedule announcement message
+        Forces the bot to send the "there is no" schedule announcement message
         """
         channel = channel or ctx.channel
 
@@ -143,7 +143,7 @@ class HotSchedulesNotifier(vbu.Cog):
 
 
     def cog_unload(self):
-        self.send_new_emails.cancel()
+        self.send_hotschedules_email.cancel()
 
 def setup(bot: vbu.Bot):
     x = HotSchedulesNotifier(bot)
