@@ -1,5 +1,5 @@
 from discord.ext import commands, vbu, tasks
-from discord import AllowedMentions
+from discord import TextChannel, AllowedMentions
 
 from cogs.GmailConnection.requester import Requester
 from cogs.bot_start import BotStart
@@ -65,7 +65,7 @@ class EmailNotifier(vbu.Cog):
         embed.description = "*Make sure to check the email through your inbox! Messages displayed here may be incorrect or incomplete*\n.\n.\n.\n"
 
         return embed
-
+        
     @staticmethod
     def get_weekly_embed():
         """
@@ -91,6 +91,46 @@ class EmailNotifier(vbu.Cog):
         embed.description = "There will not be a weekly email this week. Make sure to check your inbox for the most up-to-date info."
 
         return embed
+
+    @commands.command(aliases=['fse', 'send_emails'])
+    @commands.has_permissions(manage_guild=True)
+    async def force_send_emails(self, ctx: vbu.Context, channel: TextChannel = None):
+        """
+        Forces the bot to read all messages from the inbox
+        """
+        messages = self.bot.requester.get_new_emails()
+        channel = channel or ctx.channel
+
+        for message in messages:
+            embed = self.create_embed(message)
+            await channel.send(embed=embed)
+
+        await ctx.okay()
+
+    @commands.command(aliases=['fwa', 'weekly', 'force_weekly'])
+    @commands.has_permissions(manage_guild=True)
+    async def force_weekly_announcement(self, ctx: vbu.Context, channel: TextChannel = None):
+        """
+        Forces the bot to send the weekly email announcement message
+        """
+        channel = channel or ctx.channel
+
+        embed = self.get_weekly_embed()
+        await channel.send(embed=embed)
+        await ctx.okay()
+
+    @commands.command(aliases=['nfwa', 'nweekly', 'force_no_weekly'])
+    @commands.has_permissions(manage_guild=True)
+    async def force_no_weekly_announcement(self, ctx: vbu.Context, channel: TextChannel = None):
+        """
+        Forces the bot to send the "there is no" weekly email announcement message
+        """
+        channel = channel or ctx.channel
+
+        embed = self.get_no_weekly_embed()
+        await channel.send(embed=embed)
+        await ctx.okay()
+
 
     def cog_unload(self):
         self.send_new_emails.cancel()
