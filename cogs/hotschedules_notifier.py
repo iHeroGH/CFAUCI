@@ -72,7 +72,7 @@ class HotSchedulesNotifier(vbu.Cog):
         """
         embed = vbu.Embed()
 
-        embed.title = "Schedule Posted!" + f" ({start_date} to {end_date})" if start_date and end_date else ""
+        embed.title = "Schedule Posted!" + (f" ({start_date} to {end_date})" if start_date and end_date else "")
         embed.description = "Make sure to check your inbox for your schedule!"
         embed.color = 0x0EA3D1 # HS Blue
 
