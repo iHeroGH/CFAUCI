@@ -103,10 +103,19 @@ class HotSchedulesNotifier(vbu.Cog):
         channel = channel or ctx.channel
 
         for message in messages:
-            embed = self.create_embed(message)
-            await channel.send(embed=embed)
+            sender = message['from']
+            subject = message['subject']
+            match = re.match(r"Your schedule for (?P<start_date>\d+/\d+/\d+) to (?P<end_date>\d+/\d+/\d+) has been posted\.", subject)
 
-        await ctx.okay()
+            if match:
+                embed = self.get_schedule_embed(match.group("start_date"), match.group("end_date"))
+                await channel.send(embed=embed)
+            else:
+                if sender.lower().replace(" ", "") == "helenkim":
+                    continue
+
+                embed = self.create_embed(sender)
+                await channel.send(embed=embed)
 
     @commands.command(aliases=['fsa', 'schedule', 'force_schedule'])
     @commands.has_permissions(manage_guild=True)
