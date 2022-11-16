@@ -92,6 +92,7 @@ class OsatNotifier(vbu.Cog):
         score_matches = re.finditer(r'\|(?P<Category>[a-zA-Z /]*)\|(?P<Score>\d*)%\|(?P<NSurveys>\d*)\|', osat_info)
 
         score_dict = {}
+        score_dict["date"] = message["date"]
         for match in score_matches:
             score_dict[match.group('Category')] = int(match.group('Score'))
 
@@ -103,14 +104,15 @@ class OsatNotifier(vbu.Cog):
     async def get_scores_from_db(self):
         async with self.bot.database() as db:
             scores_rows = await db("SELECT * FROM osat_scores")
+            latest_date = await db("SELECT osat_date[array_length(osat_date, 1)] FROM osat_over_time")
 
         scores_dict = {}
         for category in scores_rows:
             for cat_abbreviation, cat_name in self.osat_abbreviations.items():
                 scores_dict[cat_name] = category[cat_abbreviation]
+            scores_dict["date"] = latest_date
 
         return scores_dict
-
 
     async def add_scores_to_db(self, curr_scores_dict: dict, message: dict):
 
@@ -149,12 +151,15 @@ class OsatNotifier(vbu.Cog):
         embed.title = "OSAT Scores"
 
         if "NSurveys" in scores_dict.keys():
-            embed.title = f"OSAT Scores - #{scores_dict['NSurveys']} surveys"
+            embed.title += f" - #{scores_dict['NSurveys']} surveys"
             if old_scores_dict and "NSurveys" in old_scores_dict.keys():
                 old_n = old_scores_dict["NSurveys"]
                 new_n = scores_dict["NSurveys"]
                 if old_n != new_n:
                     embed.title = f"OSAT Scores - #{old_scores_dict['NSurveys']} -> #{scores_dict['NSurveys']} surveys"
+        
+        if "date" in scores_dict.keys():
+            embed.title += f" - {scores_dict['date']}"
 
         overall_sat = scores_dict["Overall Satisfaction"]
         if overall_sat >= 70:
@@ -170,7 +175,7 @@ class OsatNotifier(vbu.Cog):
         score_message = ""
         # Go through each category to get its score
         for category, score in scores_dict.items():
-            if category == "NSurveys":
+            if category in ["NSurveys", "date"]:
                 continue
             # If we have a set of old scores, then we want to compare the old score to the new score
             if old_scores_dict:
