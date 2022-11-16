@@ -29,7 +29,7 @@ class OSATGrapher(vbu.Cog):
         plt.yticks(np.arange(35, 85, 2))
         # Create the labels for the x-axis data
         x_tick_labels = [f"{i.month}/{i.day}" for i in days]
-        plt.xticks(days, x_tick_labels)
+        plt.xticks(days, x_tick_labels, rotation=30)
         # Create label for x-axis and y-axis
         plt.xlabel("Day")
         plt.ylabel("Score (%)")
