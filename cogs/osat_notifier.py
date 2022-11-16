@@ -6,6 +6,7 @@ from cogs.bot_start import BotStart
 
 from bs4 import BeautifulSoup
 import re
+from datetime import datetime as dt
 
 class OsatNotifier(vbu.Cog):
 
@@ -159,7 +160,7 @@ class OsatNotifier(vbu.Cog):
                     embed.title = f"OSAT Scores - #{old_scores_dict['NSurveys']} -> #{scores_dict['NSurveys']} surveys"
         
         if "date" in scores_dict.keys():
-            embed.title += f" - {scores_dict['date']}"
+            embed.title += f" - {scores_dict['date'].strftime('%m/%d/%Y')}"
 
         overall_sat = scores_dict["Overall Satisfaction"]
         if overall_sat >= 70:
