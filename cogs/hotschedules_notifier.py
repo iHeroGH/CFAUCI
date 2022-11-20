@@ -39,7 +39,7 @@ class HotSchedulesNotifier(vbu.Cog):
         for message in messages:
             sender = message['from']
             subject = message['subject']
-            match = re.match(r"Your schedule for (?P<start_date>\d+/\d+/\d+) to (?P<end_date>\d+/\d+/\d+) has been posted\.", subject)
+            match = re.match(r"yourschedulefor(?P<start_date>\d+/\d+/\d+)to(?P<end_date>\d+/\d+/\d+)hasbeenposted\.", subject.replace(" ", "").lower())
 
             if match:
                 embed = self.get_schedule_embed(match.group("start_date"), match.group("end_date"))
