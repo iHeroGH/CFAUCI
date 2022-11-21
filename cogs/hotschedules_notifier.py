@@ -38,7 +38,7 @@ class HotSchedulesNotifier(vbu.Cog):
 
         for message in messages:
             sender = message['from']
-            subject = message['subject']
+            subject: str = message['subject']
             match = re.match(r"yourschedulefor(?P<start_date>\d+/\d+/\d+)to(?P<end_date>\d+/\d+/\d+)hasbeenposted\.", subject.replace(" ", "").lower())
 
             if match:
@@ -46,6 +46,9 @@ class HotSchedulesNotifier(vbu.Cog):
                 await announcement_channel.send(embed=embed)
             else:
                 if sender.lower().replace(" ", "") == "helenkim":
+                    continue
+                
+                if "amessageiswaitingforyouonhotschedules" not in subject.replace(" ", " ").lower(): 
                     continue
 
                 embed = self.create_embed(sender)
