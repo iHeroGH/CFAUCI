@@ -48,7 +48,7 @@ class HotSchedulesNotifier(vbu.Cog):
                 if sender.lower().replace(" ", "") == "helenkim":
                     continue
                 
-                if "amessageiswaitingforyouonhotschedules" not in subject.replace(" ", " ").lower(): 
+                if "amessageiswaitingforyouonhotschedules" not in subject.replace(" ", "").lower(): 
                     continue
 
                 embed = self.create_embed(sender)
