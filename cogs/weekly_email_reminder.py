@@ -5,7 +5,7 @@ import datetime
 
 class WeeklyEmailReminder(vbu.Cog):
 
-    TIME_TO_WAIT = 0.1 # in hours
+    TIME_TO_WAIT = 0.01 # in hours
     
     def __init__(self, bot: vbu.Bot):
         super().__init__(bot)
