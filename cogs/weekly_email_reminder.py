@@ -5,7 +5,7 @@ import datetime
 
 class WeeklyEmailReminder(vbu.Cog):
 
-    TIME_TO_WAIT = 0.01 # in hours
+    TIME_TO_WAIT = 0.1 # in hours
     
     def __init__(self, bot: vbu.Bot):
         super().__init__(bot)
@@ -47,11 +47,11 @@ class WeeklyEmailReminder(vbu.Cog):
                     continue
                 
                 last_sent = trainer_record['last_sent']
-                offset = datetime.timedelta(seconds = trainer_record['duration'])
+                offset = datetime.timedelta(hours = trainer_record['duration'])
                 future = last_sent + offset
                 
                 if datetime.datetime.now() > future:
-                    await trainer.send("This is a reminder that you have not yet sent your weekly email! Run /force_stop_reminder to stop the reminders for this week.")
+                    await trainer.send("This is a reminder that you have not yet sent your weekly email! Run `/force_stop_reminder` to stop the reminders for this week.")
                     self.bot.logger.info(f"Sent {trainer_id} a reminder message")
                     
                     await db("""INSERT INTO user_settings (user_id, last_sent)
@@ -104,7 +104,7 @@ class WeeklyEmailReminder(vbu.Cog):
             user_rows = await db("""SELECT * FROM user_settings WHERE user_id = $1""", ctx.author.id)
 
         if not user_rows or not user_rows[0]['user_name']:   
-            return await ctx.send("There was no name found in the database. Run /set_name to set a name")
+            return await ctx.send("There was no name found in the database. Run `/set_name` to set a name")
 
         await ctx.send(f"The name found in the database was **{user_rows[0]['user_name']}**")
 
@@ -139,7 +139,7 @@ class WeeklyEmailReminder(vbu.Cog):
             user_rows = await db("""SELECT * FROM user_settings WHERE user_id = $1""", ctx.author.id)
 
         if not user_rows or not user_rows[0]['duration']:   
-            return await ctx.send("There was no cooldown found in the database. Run /set_cooldown to set a cooldown")
+            return await ctx.send("There was no cooldown found in the database. Run `/set_cooldown` to set a cooldown")
 
         await ctx.send(f"The cooldown found in the database was **{user_rows[0]['duration']} hours**")
 
@@ -153,7 +153,7 @@ class WeeklyEmailReminder(vbu.Cog):
             user_rows = await db("""SELECT * FROM user_settings WHERE user_id = $1""", ctx.author.id)
 
             if not user_rows:   
-                return await ctx.send("There was no record of you found in the database")
+                return await ctx.send("There was no record of you found in the database!")
 
             await db("UPDATE user_settings SET is_sent = $1", True)
 
