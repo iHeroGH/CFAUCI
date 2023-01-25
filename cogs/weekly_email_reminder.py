@@ -47,7 +47,7 @@ class WeeklyEmailReminder(vbu.Cog):
                     continue
                 
                 last_sent = trainer_record['last_sent']
-                offset = datetime.timedelta(hours = trainer_record['duration'])
+                offset = datetime.timedelta(seconds = trainer_record['duration'])
                 future = last_sent + offset
                 
                 if datetime.datetime.now() > future:
