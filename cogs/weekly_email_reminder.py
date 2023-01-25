@@ -34,7 +34,7 @@ class WeeklyEmailReminder(vbu.Cog):
         Gets a user's name from the database
         """
         async with self.bot.database() as db:
-            user_rows = await db("""SELECT FROM user_settings WHERE user_id = $1""", ctx.author.id)
+            user_rows = await db("""SELECT * FROM user_settings WHERE user_id = $1""", ctx.author.id)
 
         if not user_rows or not user_rows[0]['user_name']:   
             return await ctx.send("There was no name found in the database. Run /set_name to set a name")
@@ -45,7 +45,7 @@ class WeeklyEmailReminder(vbu.Cog):
     @commands.has_role(913265779363942452)
     async def set_cooldown(self, ctx: vbu.Context, cooldown: int):
         """
-        Sets or changes the cooldown (in hours) of the user who wants to be notified of weekly email existence
+        Sets or changes the cooldown (in hours) of the user
         """
         async with self.bot.database() as db:
             await db("""INSERT INTO user_settings (user_id, duration)
@@ -61,7 +61,7 @@ class WeeklyEmailReminder(vbu.Cog):
         Gets a user's cooldown from the database
         """
         async with self.bot.database() as db:
-            user_rows = await db("""SELECT FROM user_settings WHERE user_id = $1""", ctx.author.id)
+            user_rows = await db("""SELECT * FROM user_settings WHERE user_id = $1""", ctx.author.id)
 
         if not user_rows or not user_rows[0]['duration']:   
             return await ctx.send("There was no cooldown found in the database. Run /set_cooldown to set a cooldown")
