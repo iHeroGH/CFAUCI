@@ -114,7 +114,7 @@ class HotSchedulesNotifier(vbu.Cog):
                 embed = self.get_schedule_embed(match.group("start_date"), match.group("end_date"))
                 await channel.send(embed=embed)
             else:
-                if sender.lower().replace(" ", "") == "helenkim":
+                if sender.lower().replace(" ", "") == self.bot.config['cfa']['schedling_manager']:
                     continue
 
                 embed = self.create_embed(sender)
