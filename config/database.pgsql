@@ -9,8 +9,12 @@ CREATE TABLE IF NOT EXISTS guild_settings(
 
 
 CREATE TABLE IF NOT EXISTS user_settings(
-    user_id BIGINT PRIMARY KEY
+    user_id BIGINT PRIMARY KEY,
+    user_name TEXT,
+    duration INT,
+    last_sent TIME
 );
+
 -- A default guild settings table.
 -- This is required for VBU and should not be deleted.
 -- You can add more columns to this table should you want to add more user-specific
