@@ -38,12 +38,17 @@ class EmailNotifier(vbu.Cog):
         for message in messages:
             if "weeklyemail" in message["subject"].replace(" ", "").lower():
                 match = re.match(r"This email was sent by (?P<name>[a-zA-Z]+ [a-zA-Z]+) using the Email My Team application", message['body'] + message['html'])
+                sender = None
                 if match:
                     sender = match.group("start_date")
 
-                if sender and sender.lower().replace(' ', '') == self.bot.config['cfa']['weekly_email_trigger']:
-                    embed = self.get_weekly_embed()
-                    await channel.send(embed=embed)                    
+                if sender:
+                    async with self.bot.database() as db:
+                        await db("UPDATE user_settings SET is_sent = $1", True)
+                
+                    if sender.lower().replace(' ', '') == self.bot.config['cfa']['weekly_email_trigger']:
+                        embed = self.get_weekly_embed()
+                        await channel.send(embed=embed)
 
             else:
                 embed = self.create_embed(message)

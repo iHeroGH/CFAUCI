@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands, vbu, tasks
 
-import re
+import datetime
 
 class WeeklyEmailReminder(vbu.Cog):
 
@@ -28,14 +28,39 @@ class WeeklyEmailReminder(vbu.Cog):
             self.send_new_reminders.restart()
             return
 
-        for message in messages:
-            # If there's a new weekly email from Dustin, reset the user_settings to not set 
-            if "weeklyemail" in message["subject"].replace(" ", "").lower():
-                
-                async with self.bot.database() as db:
+        async with self.bot.database() as db:
+            
+            for message in messages:
+                # If there's a new weekly email from Dustin, reset the user_settings to not set 
+                if "weeklyemail" in message["subject"].replace(" ", "").lower():
                     await db("UPDATE user_settings SET is_sent = $1", False)
 
+            trainer_rows = await db("SELECT * FROM user_settings WHERE is_sent = $1", False)
         
+            for trainer_record in trainer_rows:
+                trainer_id = trainer_record['user_id']
+            
+                try:
+                    trainer = self.bot.get_user(trainer_id) or await self.bot.fetch_user(trainer_id)
+                except:
+                    self.bot.logger.info(f"Could not find trainer of ID {trainer_id}")
+                    continue
+                
+                last_sent = trainer_record['last_sent']
+                offset = datetime.timedelta(hours = trainer_record['duration'])
+                future = last_sent + offset
+                
+                if datetime.datetime.now() > future:
+                    await trainer.send("This is a reminder that you have not yet sent your weekly email! Run /force_stop_reminder to stop the reminders for this week.")
+                    self.bot.logger.info(f"Sent {trainer_id} a reminder message")
+                    
+                    await db("""INSERT INTO user_settings (user_id, last_sent)
+                    VALUES ($1, $2) 
+                    ON CONFLICT DO SET last_sent = $2""", trainer_id, datetime.datetime.now()
+                    )
+
+                    self.bot.logger.info(f"Reset {trainer_id}'s last_sent")
+
 
     @commands.command(application_command_meta=commands.ApplicationCommandMeta(
         options = [discord.ApplicationCommandOption(
@@ -116,7 +141,23 @@ class WeeklyEmailReminder(vbu.Cog):
         if not user_rows or not user_rows[0]['duration']:   
             return await ctx.send("There was no cooldown found in the database. Run /set_cooldown to set a cooldown")
 
-        await ctx.send(f"The cooldown found in the database was **{user_rows[0]['duration']} hours**")    
+        await ctx.send(f"The cooldown found in the database was **{user_rows[0]['duration']} hours**")
+
+    @commands.command(application_command_meta=commands.ApplicationCommandMeta())
+    @commands.has_role(913265779363942452)
+    async def force_stop_reminders(self, ctx: vbu.Context):
+        """
+        Forcibly stops a user from recieving hourly reminders for this week
+        """
+        async with self.bot.database() as db:
+            user_rows = await db("""SELECT * FROM user_settings WHERE user_id = $1""", ctx.author.id)
+
+            if not user_rows:   
+                return await ctx.send("There was no record of you found in the database")
+
+            await db("UPDATE user_settings SET is_sent = $1", True)
+
+        await ctx.okay()
 
     def cog_unload(self):
         self.send_new_reminders.cancel()

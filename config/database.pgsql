@@ -11,9 +11,9 @@ CREATE TABLE IF NOT EXISTS guild_settings(
 CREATE TABLE IF NOT EXISTS user_settings(
     user_id BIGINT PRIMARY KEY,
     user_name TEXT,
-    duration INT,
-    last_sent TIMESTAMP,
-    is_sent BOOLEAN
+    duration INT DEFAULT 6,
+    last_sent TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW(),
+    is_sent BOOLEAN DEFAULT True
 );
 
 -- A default guild settings table.
