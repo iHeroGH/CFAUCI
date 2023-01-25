@@ -1,8 +1,41 @@
 import discord
-from discord.ext import commands, vbu
+from discord.ext import commands, vbu, tasks
 
+import re
 
 class WeeklyEmailReminder(vbu.Cog):
+
+    TIME_TO_WAIT = 0.1 # in hours
+    
+    def __init__(self, bot: vbu.Bot):
+        super().__init__(bot)
+        self.send_new_reminders.start()
+
+        self.bot: vbu.Bot
+    
+    @tasks.loop(seconds=TIME_TO_WAIT * 3600)
+    async def send_new_reminders(self):
+        """
+        The main email check task that checks for weekly emails and sends a reminder to available trainers
+        """
+        await self.bot.wait_until_ready()
+        self.bot.logger.info("Restarting Weekly Reminder Task!")
+
+        try:
+            messages = self.bot.requester.get_training_emails()
+        except Exception as e:
+            self.bot.requester.__login__()
+            self.send_new_reminders.restart()
+            return
+
+        for message in messages:
+            # If there's a new weekly email from Dustin, reset the user_settings to not set 
+            if "weeklyemail" in message["subject"].replace(" ", "").lower():
+                
+                async with self.bot.database() as db:
+                    await db("UPDATE user_settings SET is_sent = $1", False)
+
+        
 
     @commands.command(application_command_meta=commands.ApplicationCommandMeta(
         options = [discord.ApplicationCommandOption(
@@ -84,6 +117,9 @@ class WeeklyEmailReminder(vbu.Cog):
             return await ctx.send("There was no cooldown found in the database. Run /set_cooldown to set a cooldown")
 
         await ctx.send(f"The cooldown found in the database was **{user_rows[0]['duration']} hours**")    
+
+    def cog_unload(self):
+        self.send_new_reminders.cancel()
 
 def setup(bot: vbu.Bot):
     x = WeeklyEmailReminder(bot)

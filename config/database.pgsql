@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS user_settings(
     user_id BIGINT PRIMARY KEY,
     user_name TEXT,
     duration INT,
-    last_sent TIME,
+    last_sent TIMESTAMP,
     is_sent BOOLEAN
 );
 
