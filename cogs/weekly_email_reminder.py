@@ -56,7 +56,7 @@ class WeeklyEmailReminder(vbu.Cog):
                     
                     await db("""INSERT INTO user_settings (user_id, last_sent)
                     VALUES ($1, $2) 
-                    ON CONFLICT (user_id) DO SET last_sent = $2""", trainer_id, datetime.datetime.now()
+                    ON CONFLICT (user_id) DO UPDATE SET last_sent = $2""", trainer_id, datetime.datetime.now()
                     )
 
                     self.bot.logger.info(f"Reset {trainer_id}'s last_sent")
