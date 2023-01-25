@@ -3,7 +3,9 @@ from discord import TextChannel, AllowedMentions
 
 from cogs.GmailConnection.requester import Requester
 from cogs.bot_start import BotStart
+
 from bs4 import BeautifulSoup
+import re
 
 class EmailNotifier(vbu.Cog):
 
@@ -35,8 +37,14 @@ class EmailNotifier(vbu.Cog):
 
         for message in messages:
             if "weeklyemail" in message["subject"].replace(" ", "").lower():
-                embed = self.get_weekly_embed()
-                await channel.send(embed=embed)
+                match = re.match(r"This email was sent by (?P<name>[a-zA-Z]+ [a-zA-Z]+) using the Email My Team application", message['body'] + message['html'])
+                if match:
+                    sender = match.group("start_date")
+
+                if sender and sender.lower().replace(' ', '') == self.bot.config['cfa']['weekly_email_trigger']:
+                    embed = self.get_weekly_embed()
+                    await channel.send(embed=embed)                    
+
             else:
                 embed = self.create_embed(message)
                 await channel.send(content="@everyone", embed=embed, allowed_mentions=AllowedMentions.all())
