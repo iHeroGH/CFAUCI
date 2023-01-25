@@ -3,7 +3,7 @@ from discord.ext import commands, vbu
 
 class WeeklyEmailReminder(vbu.Cog):
 
-    @commands.command()
+    @commands.command(application_command_meta=commands.ApplicationCommandMeta())
     @commands.has_role(913265779363942452)
     async def set_name(self, ctx: vbu.Context, name: str):
         """
@@ -16,7 +16,7 @@ class WeeklyEmailReminder(vbu.Cog):
 
         await ctx.okay()
     
-    @commands.command()
+    @commands.command(application_command_meta=commands.ApplicationCommandMeta())
     @commands.has_role(913265779363942452)
     async def remove_name(self, ctx: vbu.Context):
         """
@@ -27,7 +27,7 @@ class WeeklyEmailReminder(vbu.Cog):
 
         await ctx.okay()
 
-    @commands.command()
+    @commands.command(application_command_meta=commands.ApplicationCommandMeta())
     @commands.has_role(913265779363942452)
     async def get_name(self, ctx: vbu.Context):
         """
@@ -41,7 +41,7 @@ class WeeklyEmailReminder(vbu.Cog):
 
         await ctx.send(f"The name found in the database was **{user_rows[0]['user_name']}**")
 
-    @commands.command()
+    @commands.command(application_command_meta=commands.ApplicationCommandMeta())
     @commands.has_role(913265779363942452)
     async def set_cooldown(self, ctx: vbu.Context, cooldown: int):
         """
@@ -54,7 +54,7 @@ class WeeklyEmailReminder(vbu.Cog):
 
         await ctx.okay()
 
-    @commands.command()
+    @commands.command(application_command_meta=commands.ApplicationCommandMeta())
     @commands.has_role(913265779363942452)
     async def get_cooldown(self, ctx: vbu.Context):
         """
