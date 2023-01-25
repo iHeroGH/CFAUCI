@@ -1,9 +1,18 @@
+import discord
 from discord.ext import commands, vbu
 
 
 class WeeklyEmailReminder(vbu.Cog):
 
-    @commands.command(application_command_meta=commands.ApplicationCommandMeta())
+    @commands.command(application_command_meta=commands.ApplicationCommandMeta(
+        options = [discord.ApplicationCommandOption(
+            name = "name",
+            description = "The name you want to add",
+            type = discord.ApplicationCommandOptionType.string
+            )
+        ]
+    )
+    )
     @commands.has_role(913265779363942452)
     async def set_name(self, ctx: vbu.Context, name: str):
         """
@@ -41,7 +50,15 @@ class WeeklyEmailReminder(vbu.Cog):
 
         await ctx.send(f"The name found in the database was **{user_rows[0]['user_name']}**")
 
-    @commands.command(application_command_meta=commands.ApplicationCommandMeta())
+    @commands.command(application_command_meta=commands.ApplicationCommandMeta(
+        options = [discord.ApplicationCommandOption(
+            name = "cooldown",
+            description = "The cooldown you want to set",
+            type = discord.ApplicationCommandOptionType.integer
+            )
+        ]
+    )
+    )
     @commands.has_role(913265779363942452)
     async def set_cooldown(self, ctx: vbu.Context, cooldown: int):
         """
