@@ -43,8 +43,11 @@ class EmailNotifier(vbu.Cog):
                     match = re.match(r"This email was sent by (?P<name>[a-zA-Z]+ [a-zA-Z]+) using the Email My Team application", message['body'])
                         
                 sender = None
+                print(match)
                 if match:
                     sender = match.group("name")
+
+                self.bot.logger.info(f"Found Weekly Email")
 
                 if sender:
                     async with self.bot.database() as db:
