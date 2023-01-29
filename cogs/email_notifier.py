@@ -44,13 +44,15 @@ class EmailNotifier(vbu.Cog):
                         
                 sender = None
                 if match:
-                    sender = match.group("start_date")
+                    sender = match.group("name")
 
                 if sender:
                     async with self.bot.database() as db:
-                        await db("UPDATE user_settings SET is_sent = $1", True)
-                
+                        await db("UPDATE user_settings SET is_sent = $1 WHERE user_name = $2", True, sender)
+
+                    self.bot.logger.info(f"Found Weekly Email Sender by name {sender}")
                     if sender.lower().replace(' ', '') == self.bot.config['cfa']['weekly_email_trigger']:
+                        self.bot.logger.info(f"Sent Weekly Email Mass Reminder")
                         embed = self.get_weekly_embed()
                         await channel.send(embed=embed)
 
