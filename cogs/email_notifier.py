@@ -37,7 +37,11 @@ class EmailNotifier(vbu.Cog):
 
         for message in messages:
             if "weeklyemail" in message["subject"].replace(" ", "").lower():
-                match = re.match(r"This email was sent by (?P<name>[a-zA-Z]+ [a-zA-Z]+) using the Email My Team application", message['body'] + message['html'])
+                if 'html' in message.keys():
+                    match = re.match(r"This email was sent by (?P<name>[a-zA-Z]+ [a-zA-Z]+) using the Email My Team application", message['html'])
+                else:
+                    match = re.match(r"This email was sent by (?P<name>[a-zA-Z]+ [a-zA-Z]+) using the Email My Team application", message['body'])
+                        
                 sender = None
                 if match:
                     sender = match.group("start_date")
