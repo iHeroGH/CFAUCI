@@ -155,7 +155,8 @@ class WeeklyEmailReminder(vbu.Cog):
             if not user_rows:   
                 return await ctx.send("There was no record of you found in the database!")
 
-            await db("UPDATE user_settings SET is_sent = $1", True)
+            await db("UPDATE user_settings SET is_sent = $1 WHERE user_id = $2", True, ctx.author.id)
+            self.bot.logger.info(f"Force stopped reminders for {ctx.author.id}")
 
         await ctx.okay()
 
