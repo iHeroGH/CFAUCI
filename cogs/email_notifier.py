@@ -49,8 +49,21 @@ class EmailNotifier(vbu.Cog):
                 self.bot.logger.info(f"Found Weekly Email")
 
                 if sender:
+                    sender_id = 0
                     async with self.bot.database() as db:
-                        await db("UPDATE user_settings SET is_sent = $1 WHERE user_name = $2", True, sender)
+                        sender_id = await db(
+                            """UPDATE 
+                            user_settings 
+                            SET is_sent = $1 WHERE user_name = $2 
+                            RETURNING (user_id)""", 
+                            True, sender
+                        )
+                        
+                    if sender_id:
+                        sender_id = sender_id[0]['user_id']
+                        await self.bot.get_user(sender_id).send(
+                            "Your weekly email has been recieved!"
+                            )
 
                     self.bot.logger.info(f"Found Weekly Email Sender by name {sender}")
                     if sender.lower().replace(' ', '') == self.bot.config['cfa']['weekly_email_trigger']:
