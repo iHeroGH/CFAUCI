@@ -16,6 +16,7 @@ class Requester:
         Gets the mail credentials from the credential JSON
         """
         cred_json = json.load(open('config/google_config/credentials.json'))
+        self.special_email = json.load(open('config/config.toml'))['cfa']['special_email']
         return cred_json['login']['username'], cred_json['login']['password']
 
     def __login__(self):
@@ -186,9 +187,9 @@ class Requester:
         # The thrown var is a status check
         # Search data is a list of bytes
         if unseen_on:
-            _, search_data = self.client.search(None, 'FROM', "jojomedhat2004@gmail.com", "UNSEEN")
+            _, search_data = self.client.search(None, 'FROM', self.special_email, "UNSEEN")
         else:
-            _, search_data = self.client.search(None, 'FROM', "jojomedhat2004@gmail.com")
+            _, search_data = self.client.search(None, 'FROM', self.special_email)
 
         all_messages = []
         for message_num in search_data[0].split():
