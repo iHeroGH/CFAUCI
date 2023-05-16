@@ -90,7 +90,7 @@ class WeeklyEmailReminder(vbu.Cog):
         Removes a user from the database
         """
         async with self.bot.database() as db:
-            await db("""REMOVE FROM user_settings WHERE user_id = $1""", ctx.author.id)
+            await db("""DELETE FROM user_settings WHERE user_id = $1""", ctx.author.id)
 
         await ctx.okay()
 
