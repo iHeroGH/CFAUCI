@@ -1,4 +1,5 @@
 import json
+import toml
 
 import imaplib
 import mailbox
@@ -16,7 +17,7 @@ class Requester:
         Gets the mail credentials from the credential JSON
         """
         cred_json = json.load(open('config/google_config/credentials.json'))
-        self.special_email = json.load(open('config/config.toml'))['cfa']['special_email']
+        self.special_email = toml.load(open('config/config.toml'))['cfa']['special_email']
         return cred_json['login']['username'], cred_json['login']['password']
 
     def __login__(self):
