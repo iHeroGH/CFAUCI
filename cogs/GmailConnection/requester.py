@@ -147,9 +147,9 @@ class Requester:
         # The thrown var is a status check
         # Search data is a list of bytes
         if is_task:
-            _, search_data = self.client.search(None, 'FROM', "SMGMailMgr@whysmg.com", "UNSEEN")
+            _, search_data = self.client.search(None, 'FROM', '"SMGMailMgr@whysmg.com"', "UNSEEN")
         else:
-            _, search_data = self.client.search(None, 'FROM', "SMGMailMgr@whysmg.com")
+            _, search_data = self.client.search(None, 'FROM', '"SMGMailMgr@whysmg.com"')
 
         search_data = search_data[0].split()
 
